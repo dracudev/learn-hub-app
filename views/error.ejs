@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="styles/error.css" /> <%- include('partials/header')
+%>
+<main>
+  <div class="error-container">
+    <h1>Oops! Something went wrong</h1>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+    <div class="error-details">
+      <h2>Error <%= error.status || 500 %></h2>
+      <p><%= error.message || 'An unexpected error occurred' %></p>
+
+      <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
+      <pre class="error-stack"><%= error.stack %></pre>
+      <% } %>
+    </div>
+    <% } else { %>
+    <div class="error-details">
+      <h2>Error 500</h2>
+      <p>An unexpected error occurred</p>
+    </div>
+    <% } %>
+
+    <div class="error-actions">
+      <a href="/" class="btn">Go Home</a>
+      <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+    </div>
+  </div>
+</main>
+<%- include('partials/footer') %>

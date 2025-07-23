@@ -1,30 +1,30 @@
 /* Users Administration Table Styles */
 .admin-header {
-  padding: 1rem;
+  padding: var(--spacing-md);
   text-align: center;
 }
 
 .admin-table {
   width: 100%;
   border-collapse: collapse;
-  margin: 2rem 0;
-  background: #fff;
-  border-radius: 8px;
+  margin: var(--spacing-xl) 0;
+  background: var(--bg-white);
+  border-radius: var(--border-radius-lg);
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+  box-shadow: var(--shadow-form);
 }
 
 .admin-table th,
 .admin-table td {
-  padding: 1rem;
+  padding: var(--spacing-md);
   text-align: left;
 }
 
 .admin-table th {
-  background: #3498db;
-  color: #fff;
+  background: var(--accent-color);
+  color: var(--text-white);
   font-weight: 600;
-  border-bottom: 2px solid #2980b9;
+  border-bottom: 2px solid var(--accent-hover);
 }
 
 .admin-table tr:nth-child(even) {
@@ -36,8 +36,8 @@
 }
 
 .admin-table td {
-  border-bottom: 1px solid #e1e4e8;
-  color: #2c3e50;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--primary-color);
 }
 
 /* Responsive Table */
@@ -57,7 +57,7 @@
     z-index: 2;
   }
   .admin-table tr {
-    margin-bottom: 1rem;
+    margin-bottom: var(--spacing-md);
   }
   .admin-table td {
     padding-left: 50%;
@@ -66,9 +66,9 @@
   .admin-table td:before {
     content: attr(data-label);
     position: absolute;
-    left: 1rem;
-    top: 1rem;
+    left: var(--spacing-md);
+    top: var(--spacing-md);
     font-weight: bold;
-    color: #2980b9;
+    color: var(--accent-hover);
   }
 }

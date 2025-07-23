@@ -3,8 +3,9 @@ const router = express.Router();
 const authRoutes = require("./authRoutes");
 const adminRoutes = require("./adminRoutes");
 const courseRoutes = require("./courseRoutes");
+const userRoutes = require("./userRoutes");
+const { requireAdmin, requireAuth } = require("../middleware/auth");
 
-// Home route
 router.get("/", function (req, res) {
   let message;
   if (req.session.user) {
@@ -19,9 +20,9 @@ router.get("/", function (req, res) {
   });
 });
 
-// Use route modules
-router.use("/", authRoutes);
-router.use("/", adminRoutes);
-router.use("/", courseRoutes);
+router.use("/auth", authRoutes);
+router.use("/admin", requireAdmin, adminRoutes);
+router.use("/courses", courseRoutes);
+router.use("/user", requireAuth, userRoutes);
 
 module.exports = router;

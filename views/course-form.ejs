@@ -1,5 +1,5 @@
 <%- include('partials/head') %>
-<link rel="stylesheet" href="/style/components.css" />
+<link rel="stylesheet" href="/styles/auth.css" />
 <%- include('partials/header', { user: user }) %>
 <main>
   <h1><%= title %></h1>
@@ -58,23 +58,14 @@
       <%= course.id ? 'Update' : 'Create' %> Course
     </button>
     <a
-      href="/administration"
+      href="/admin/dashboard"
       class="btn-edit"
       style="
         text-decoration: none;
         width: 100%;
         padding: 0.8rem;
         margin-top: 0.5rem;
-      "
-      >Cancel</a
+      ">Cancel</a
     >
   </form>
 </main>
-<%- include('partials/footer') %>
-        margin-top: 0.5rem;
-      "
-      >Cancel</a
-    >
-  </form>
-</main>
-<%- include('partials/footer') %>
