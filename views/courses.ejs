@@ -10,7 +10,9 @@ include('partials/header') %>
       <h2><a href="/courses/<%= course.id %>"><%= course.title %></a></h2>
       <p><%= course.description %></p>
       <p>Category: <%= course.category %></p>
-      <p>Visibility: <%= course.visibility %></p>
+      <p class="visibility-badge <%= course.visibility %>">
+        Visibility: <%= course.visibility %>
+      </p>
     </li>
     <% } %> <% }) %>
   </ul>

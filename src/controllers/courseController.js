@@ -119,7 +119,7 @@ exports.delete = (req, res) => {
 
 exports.getAll = (req, res) => {
   connection.query(
-    "SELECT id, title, description, category FROM courses WHERE visibility = 'public'",
+    "SELECT id, title, description, category, visibility FROM courses",
     function (err, courses) {
       if (err) {
         return res.render("courses", {
@@ -139,8 +139,13 @@ exports.getAll = (req, res) => {
 };
 
 exports.getDetails = (req, res) => {
+  const isLoggedIn = req.session.user ? true : false;
+  const visibilityCondition = isLoggedIn
+    ? "WHERE id = ?"
+    : "WHERE id = ? AND visibility = 'public'";
+
   connection.query(
-    "SELECT * FROM courses WHERE id = ? AND visibility = 'public'",
+    `SELECT * FROM courses ${visibilityCondition}`,
     [req.params.id],
     function (err, results) {
       if (err || results.length === 0) {
