@@ -8,12 +8,10 @@ const {
 
 // Sign up routes
 router.get("/signup", authController.getSignup);
-
 router.post("/signup", signupValidation, authController.postSignup);
 
 // Login routes
 router.get("/login", authController.getLogin);
-
 router.post("/login", loginValidation, authController.postLogin);
 
 // Logout route

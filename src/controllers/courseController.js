@@ -10,14 +10,14 @@ const courseController = {
       const courses = await query(
         "SELECT id, title, description, category, visibility FROM courses"
       );
-      res.render("administration", {
+      res.render("admin", {
         title: "Administration page",
         message: "Welcome to the administration page",
         user: req.session.user,
         courses: courses,
       });
     } catch (err) {
-      res.render("administration", {
+      res.render("admin", {
         title: "Administration page",
         message: "Error loading courses.",
         user: req.session.user,
