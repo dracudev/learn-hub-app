@@ -1,0 +1,21 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/styles/courses.css" /> <%-
+include('partials/header') %>
+<main>
+  <% if (courses && courses.length > 0) { %>
+  <ul class="course-list">
+    <% courses.forEach(function(course) { %> <% if (course.visibility ===
+    'public' || (user && course.visibility === 'private')) { %>
+    <li>
+      <h2><a href="/courses/<%= course.id %>"><%= course.title %></a></h2>
+      <p><%= course.description %></p>
+      <p>Category: <%= course.category %></p>
+      <p>Visibility: <%= course.visibility %></p>
+    </li>
+    <% } %> <% }) %>
+  </ul>
+  <% } else { %>
+  <p>No courses available.</p>
+  <% } %>
+</main>
+<%- include('partials/footer') %>

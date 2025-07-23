@@ -1,0 +1,54 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/styles/admin.css" />
+<%- include('partials/header') %>
+<main>
+  <div class="admin-header">
+    <h1><%= title %></h1>
+    <p><%= message %></p>
+  </div>
+
+  <% if (courses && courses.length > 0) { %>
+  <h2>All Courses</h2>
+  <a href="/courses/create" class="btn-create">Create Course</a>
+  <table class="admin-table">
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Category</th>
+      <th>Visibility</th>
+      <th>Actions</th>
+    </tr>
+    <% courses.forEach(function(c) { %>
+    <tr>
+      <td><%= c.id %></td>
+      <td><%= c.title %></td>
+      <td><%= c.description.substring(0, 50) %>...</td>
+      <td><%= c.category %></td>
+      <td><%= c.visibility %></td>
+      <td>
+        <a href="/courses/<%= c.id %>/edit" class="btn-edit">Edit</a>
+        <form
+          action="/courses/<%= c.id %>/delete"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            class="btn-delete"
+            onclick="return confirm('Are you sure?')"
+          >
+            Delete
+          </button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </table>
+  <% } else { %>
+  <h2>Courses</h2>
+  <a href="/courses/create" class="btn-create">Create Course</a>
+  <p>No courses found.</p>
+  <% } %>
+</main>
+<%- include('partials/footer') %>

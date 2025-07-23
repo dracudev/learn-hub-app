@@ -1,0 +1,80 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/style/components.css" />
+<%- include('partials/header', { user: user }) %>
+<main>
+  <h1><%= title %></h1>
+
+  <% if (errors && errors.length > 0) { %>
+  <div class="error">
+    <% errors.forEach(function(err) { %>
+    <div><%= err.msg %></div>
+    <% }) %>
+  </div>
+  <% } %>
+
+  <form
+    action="<%= course.id ? '/courses/' + course.id + '/edit' : '/courses/create' %>"
+    method="POST"
+    class="auth-form"
+    autocomplete="off"
+  >
+    <div>
+      <label for="title">Title:</label>
+      <input
+        type="text"
+        id="title"
+        name="title"
+        value="<%= course.title || '' %>"
+        required
+      />
+    </div>
+    <div>
+      <label for="description">Description:</label>
+      <textarea
+        id="description"
+        name="description"
+        rows="4"
+        required
+      ><%= course.description || '' %></textarea>
+    </div>
+    <div>
+      <label for="category">Category:</label>
+      <input
+        type="text"
+        id="category"
+        name="category"
+        value="<%= course.category || '' %>"
+        required
+      />
+    </div>
+    <div>
+      <label for="visibility">Visibility:</label>
+      <select id="visibility" name="visibility" required>
+        <option value="public" <%= (course.visibility === 'public') ? 'selected' : '' %>>Public</option>
+        <option value="private" <%= (course.visibility === 'private') ? 'selected' : '' %>>Private</option>
+      </select>
+    </div>
+    <button type="submit">
+      <%= course.id ? 'Update' : 'Create' %> Course
+    </button>
+    <a
+      href="/administration"
+      class="btn-edit"
+      style="
+        text-decoration: none;
+        width: 100%;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+      "
+      >Cancel</a
+    >
+  </form>
+</main>
+<%- include('partials/footer') %>
+        margin-top: 0.5rem;
+      "
+      >Cancel</a
+    >
+  </form>
+</main>
+<%- include('partials/footer') %>

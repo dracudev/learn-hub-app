@@ -1,0 +1,74 @@
+/* Users Administration Table Styles */
+.admin-header {
+  padding: 1rem;
+  text-align: center;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 1rem;
+  text-align: left;
+}
+
+.admin-table th {
+  background: #3498db;
+  color: #fff;
+  font-weight: 600;
+  border-bottom: 2px solid #2980b9;
+}
+
+.admin-table tr:nth-child(even) {
+  background: #f4f8fb;
+}
+
+.admin-table tr:hover {
+  background: #eaf6fd;
+}
+
+.admin-table td {
+  border-bottom: 1px solid #e1e4e8;
+  color: #2c3e50;
+}
+
+/* Responsive Table */
+@media (max-width: 600px) {
+  .admin-table,
+  .admin-table thead,
+  .admin-table tbody,
+  .admin-table th,
+  .admin-table td,
+  .admin-table tr {
+    display: block;
+    width: 100%;
+  }
+  .admin-table th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  .admin-table tr {
+    margin-bottom: 1rem;
+  }
+  .admin-table td {
+    padding-left: 50%;
+    position: relative;
+  }
+  .admin-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    font-weight: bold;
+    color: #2980b9;
+  }
+}
