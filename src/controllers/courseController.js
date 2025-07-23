@@ -124,9 +124,24 @@ const courseController = {
       const courses = await query(
         "SELECT id, title, description, category, visibility FROM courses"
       );
+
+      // If user is logged in, check enrollment status for each course
+      let coursesWithEnrollment = courses;
+      if (req.session.user) {
+        const userId = req.session.user.id;
+
+        for (let course of coursesWithEnrollment) {
+          const enrollmentCheck = await query(
+            "SELECT id FROM enrollments WHERE user_id = ? AND course_id = ?",
+            [userId, course.id]
+          );
+          course.isEnrolled = enrollmentCheck.length > 0;
+        }
+      }
+
       res.render("courses", {
         title: "Courses",
-        courses: courses,
+        courses: coursesWithEnrollment,
         user: req.session.user,
       });
     } catch (err) {

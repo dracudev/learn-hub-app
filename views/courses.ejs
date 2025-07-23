@@ -1,23 +1,88 @@
 <%- include('partials/head') %>
-<link rel="stylesheet" href="/styles/courses.css" /> <%-
-include('partials/header') %>
+<link rel="stylesheet" href="/styles/courses.css" />
+<%- include('partials/header') %>
+
 <main>
-  <% if (courses && courses.length > 0) { %>
-  <ul class="course-list">
-    <% courses.forEach(function(course) { %> <% if (course.visibility ===
-    'public' || (user && course.visibility === 'private')) { %>
-    <li>
-      <h2><a href="/courses/<%= course.id %>"><%= course.title %></a></h2>
-      <p><%= course.description %></p>
-      <p>Category: <%= course.category %></p>
-      <p class="visibility-badge <%= course.visibility %>">
-        Visibility: <%= course.visibility %>
+  <div class="courses-container">
+    <div class="courses-header">
+      <h1>Available Courses</h1>
+      <p class="courses-subtitle">
+        Discover and enroll in courses that interest you
       </p>
-    </li>
-    <% } %> <% }) %>
-  </ul>
-  <% } else { %>
-  <p>No courses available.</p>
-  <% } %>
+    </div>
+
+    <% if (courses && courses.length > 0) { %>
+    <div class="courses-grid">
+      <% courses.forEach(function(course) { %> <% if (course.visibility ===
+      'public' || (user && course.visibility === 'private')) { %>
+      <div class="course-card">
+        <div class="course-header">
+          <h2><a href="/courses/<%= course.id %>"><%= course.title %></a></h2>
+          <span class="visibility-badge <%= course.visibility %>">
+            <%= course.visibility %>
+          </span>
+        </div>
+
+        <div class="course-body">
+          <p class="course-description"><%= course.description %></p>
+          <p class="course-category">
+            <i class="fas fa-tag"></i>
+            Category: <%= course.category %>
+          </p>
+        </div>
+
+        <div class="course-footer">
+          <a href="/courses/<%= course.id %>" class="btn btn-view">
+            <i class="fas fa-eye"></i>
+            View Details
+          </a>
+
+          <% if (user) { %> <% if (course.isEnrolled) { %>
+          <form
+            action="/user/unenroll/<%= course.id %>"
+            method="POST"
+            style="display: inline"
+          >
+            <button
+              type="submit"
+              class="btn btn-enrolled"
+              onclick="return confirm('Are you sure you want to unenroll from this course?')"
+            >
+              <i class="fas fa-check-circle"></i>
+              Enrolled
+            </button>
+          </form>
+          <% } else { %>
+          <form
+            action="/user/enroll/<%= course.id %>"
+            method="POST"
+            style="display: inline"
+          >
+            <button type="submit" class="btn btn-enroll">
+              <i class="fas fa-plus-circle"></i>
+              Enroll
+            </button>
+          </form>
+          <% } %> <% } else { %>
+          <a href="/auth/login" class="btn btn-login">
+            <i class="fas fa-sign-in-alt"></i>
+            Login to Enroll
+          </a>
+          <% } %>
+        </div>
+      </div>
+      <% } %> <% }) %>
+    </div>
+    <% } else { %>
+    <div class="no-courses">
+      <div class="no-courses-icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <h3>No Courses Available</h3>
+      <p>There are currently no courses available. Check back later!</p>
+    </div>
+    <% } %>
+  </div>
 </main>
+
 <%- include('partials/footer') %>

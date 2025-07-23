@@ -1,0 +1,85 @@
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/styles/profile.css" />
+<%- include('partials/header') %>
+
+<main>
+  <% if (user) { %>
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <img
+          src="<%= user.profile_picture || '/images/default-avatar.png' %>"
+          alt="Profile Picture"
+          class="avatar-img"
+          onerror="this.src='/images/default-avatar.png'"
+        />
+      </div>
+      <div class="profile-info">
+        <h1><%= user.name || 'Unknown User' %></h1>
+        <p class="profile-email"><%= user.email || 'No email' %></p>
+        <p class="profile-role">Role: <%= user.role || 'user' %></p>
+        <p class="profile-joined">
+          Member since: <%= user.created_at ? new
+          Date(user.created_at).toLocaleDateString() : 'Unknown' %>
+        </p>
+      </div>
+    </div>
+
+    <div class="enrolled-courses">
+      <h2>My Enrolled Courses</h2>
+      <% if (enrolledCourses && enrolledCourses.length > 0) { %>
+      <div class="courses-grid">
+        <% enrolledCourses.forEach(function(course) { %>
+        <div class="course-card">
+          <div class="course-header">
+            <h3><%= course.title %></h3>
+            <span class="course-category"><%= course.category %></span>
+          </div>
+          <div class="course-body">
+            <p><%= course.description %></p>
+          </div>
+          <div class="course-footer">
+            <span class="enrollment-date">
+              Enrolled: <%= new
+              Date(course.enrollment_date).toLocaleDateString() %>
+            </span>
+            <div class="course-actions">
+              <a href="/courses/<%= course.id %>" class="btn-view"
+                >View Course</a
+              >
+              <form
+                action="/user/unenroll/<%= course.id %>"
+                method="POST"
+                style="display: inline"
+              >
+                <button
+                  type="submit"
+                  class="btn-unenroll"
+                  onclick="return confirm('Are you sure you want to unenroll from this course?')"
+                >
+                  Unenroll
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <% } else { %>
+      <div class="no-courses">
+        <p>You haven't enrolled in any courses yet.</p>
+        <a href="/courses" class="btn-browse">Browse Courses</a>
+      </div>
+      <% } %>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="error-container">
+    <h1>Profile Not Found</h1>
+    <p>Unable to load profile information.</p>
+    <a href="/auth/login" class="btn">Login</a>
+  </div>
+  <% } %>
+</main>
+
+<%- include('partials/footer') %>

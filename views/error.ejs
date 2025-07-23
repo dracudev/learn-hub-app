@@ -1,30 +1,70 @@
 <%- include('partials/head') %>
-<link rel="stylesheet" href="styles/error.css" /> <%- include('partials/header')
-%>
+<link rel="stylesheet" href="/styles/error.css" />
+<%- include('partials/header') %>
+
 <main>
   <div class="error-container">
-    <h1>Oops! Something went wrong</h1>
-
-    <% if (typeof error !== 'undefined' && error) { %>
-    <div class="error-details">
-      <h2>Error <%= error.status || 500 %></h2>
-      <p><%= error.message || 'An unexpected error occurred' %></p>
-
-      <% if (process.env.NODE_ENV === 'development' && error.stack) { %>
-      <pre class="error-stack"><%= error.stack %></pre>
+    <div class="error-icon">
+      <% if (typeof error !== 'undefined' && error && error.status) { %> <% if
+      (error.status === 404) { %>
+      <i class="fas fa-search"></i>
+      <% } else if (error.status === 403) { %>
+      <i class="fas fa-lock"></i>
+      <% } else if (error.status === 500) { %>
+      <i class="fas fa-exclamation-triangle"></i>
+      <% } else { %>
+      <i class="fas fa-bug"></i>
+      <% } %> <% } else { %>
+      <i class="fas fa-exclamation-triangle"></i>
       <% } %>
     </div>
-    <% } else { %>
+
+    <h1>
+      <% if (typeof error !== 'undefined' && error && error.status) { %> <% if
+      (error.status === 404) { %> Page Not Found <% } else if (error.status ===
+      403) { %> Access Denied <% } else if (error.status === 500) { %> Server
+      Error <% } else { %> Error <%= error.status %> <% } %> <% } else { %>
+      Something went wrong <% } %>
+    </h1>
+
     <div class="error-details">
-      <h2>Error 500</h2>
-      <p>An unexpected error occurred</p>
+      <p>
+        <% if (typeof error !== 'undefined' && error && error.message) { %> <%=
+        error.message %> <% } else { %> An unexpected error occurred. Please try
+        again later. <% } %>
+      </p>
+
+      <% if (process.env.NODE_ENV === 'development' && typeof error !==
+      'undefined' && error && error.stack) { %>
+      <details class="error-stack-container">
+        <summary>Technical Details (Development)</summary>
+        <pre class="error-stack"><%= error.stack %></pre>
+      </details>
+      <% } %>
     </div>
-    <% } %>
 
     <div class="error-actions">
-      <a href="/" class="btn">Go Home</a>
-      <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+      <a href="/" class="btn btn-primary">
+        <i class="fas fa-home"></i>
+        Go Home
+      </a>
+      <% if (typeof error !== 'undefined' && error && error.status === 404) { %>
+      <a href="/courses" class="btn">
+        <i class="fas fa-book"></i>
+        Browse Courses
+      </a>
+      <% } else { %>
+      <button onclick="history.back()" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i>
+        Go Back
+      </button>
+      <% } %>
+      <button onclick="location.reload()" class="btn btn-secondary">
+        <i class="fas fa-redo"></i>
+        Try Again
+      </button>
     </div>
   </div>
 </main>
+
 <%- include('partials/footer') %>
