@@ -8,7 +8,7 @@ const courseController = {
         attributes: ["id", "title", "description", "category", "visibility"],
       });
       res.render("admin", {
-        title: "Administration page",
+        title: "Admin",
         message: "Welcome to the administration page",
         user: req.session.user,
         courses: courses,
