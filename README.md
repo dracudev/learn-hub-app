@@ -1,4 +1,21 @@
-# Course Catalog Application
+# Course Catalog App
+
+## Table of Contents
+
+- [Description](#description)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Setup Instructions](#setup-instructions)
+- [Default Users](#default-users)
+- [API Routes](#api-routes)
+- [Scripts](#scripts)
+- [File Structure](#file-structure)
+- [Database Schema](#database-schema)
+- [Database Architecture](#database-architecture)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Description
 
 A Node.js application for managing courses with user authentication and enrollment features, built with Express.js and a database abstraction layer that supports easy ORM switching.
 
@@ -22,8 +39,6 @@ A Node.js application for managing courses with user authentication and enrollme
 - **Validation**: express-validator
 
 ## Setup Instructions
-
-### Development Environment
 
 1. **Clone the repository**
 
@@ -125,24 +140,22 @@ After seeding, you can log in with:
 ```tree
 ├── app.js                 # Main application file
 ├── package.json
-├── .env                   # Environment variables
+├── .env
 ├── .sequelizerc          # Sequelize configuration
-├── deploy.js             # Production deployment script
-├── reset-db.js           # Database reset utility
-├── database/             # 🆕 Database Abstraction Layer
+├── database/             # Database Abstraction Layer
 │   ├── index.js             # Database adapter (connection manager)
 │   ├── config/
 │   │   ├── database.js      # Environment configurations
 │   │   └── sequelize.js     # Sequelize instance + model creation
 │   ├── factories/
 │   │   └── SequelizeModelFactory.js  # Schema → Sequelize converter
-│   └── schemas/             # 🆕 ORM-agnostic schema definitions
-│       ├── index.js         # Schema exports
-│       ├── userSchema.js    # User structure definition
-│       ├── courseSchema.js  # Course structure definition
-│       └── enrollmentSchema.js  # Enrollment structure definition
-├── migrations/           # Database migrations
-├── seeders/             # Database seeders
+│   └── schemas/             # ORM-agnostic schema definitions
+│       ├── index.js
+│       ├── userSchema.js
+│       ├── courseSchema.js
+│       └── enrollmentSchema.js
+├── migrations/
+├── seeders/
 ├── public/              # Static assets
 │   ├── images/
 │   ├── scripts/
@@ -154,11 +167,11 @@ After seeding, you can log in with:
 │   │   └── userController.js
 │   ├── middleware/
 │   │   └── auth.js
-│   ├── models/          # 🔄 Now use database abstraction
-│   │   ├── index.js        # Model exports via abstraction
-│   │   ├── User.js         # User model (abstracted)
-│   │   ├── Course.js       # Course model (abstracted)
-│   │   └── Enrollment.js   # Enrollment model (abstracted)
+│   ├── models/          # (Abstracted)
+│   │   ├── index.js
+│   │   ├── User.js
+│   │   ├── Course.js
+│   │   └── Enrollment.js
 │   ├── routes/
 │   │   ├── index.js
 │   │   ├── adminRoutes.js
@@ -222,4 +235,4 @@ After seeding, you can log in with:
 
 ## License
 
-ISC License
+This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
