@@ -139,6 +139,7 @@ const courseController = {
               user_id: userId,
               course_id: course.id,
             },
+            attributes: ["id", "user_id", "course_id", "created_at"],
           });
           course.isEnrolled = !!enrollment;
         }

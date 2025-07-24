@@ -47,6 +47,9 @@ class SequelizeModelFactory {
       case "TEXT":
         sequelizeField.type = DataTypes.TEXT;
         break;
+      case "DATE":
+        sequelizeField.type = DataTypes.DATE;
+        break;
       case "ENUM":
         sequelizeField.type = DataTypes.ENUM(...fieldConfig.values);
         break;
@@ -59,7 +62,13 @@ class SequelizeModelFactory {
     if (fieldConfig.autoIncrement) sequelizeField.autoIncrement = true;
     if (fieldConfig.required) sequelizeField.allowNull = false;
     if (fieldConfig.unique) sequelizeField.unique = true;
-    if (fieldConfig.default) sequelizeField.defaultValue = fieldConfig.default;
+    if (fieldConfig.defaultValue) {
+      if (fieldConfig.defaultValue === "NOW") {
+        sequelizeField.defaultValue = DataTypes.NOW;
+      } else {
+        sequelizeField.defaultValue = fieldConfig.defaultValue;
+      }
+    }
 
     // Validation
     if (fieldConfig.validate) {
@@ -85,7 +94,9 @@ class SequelizeModelFactory {
     };
 
     // Timestamps
-    if (schema.timestamps) {
+    if (schema.timestamps === false) {
+      options.timestamps = false;
+    } else if (schema.timestamps) {
       options.timestamps = true;
       if (schema.timestamps.createdAt) {
         options.createdAt = schema.timestamps.createdAt;

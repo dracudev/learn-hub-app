@@ -31,16 +31,16 @@ const userController = {
             model: Enrollment,
             as: "enrollments",
             where: { user_id: userId },
-            attributes: ["enrollment_date"],
+            attributes: ["id", "user_id", "course_id", "created_at"],
           },
         ],
-        order: [["enrollments", "enrollment_date", "DESC"]],
+        order: [["enrollments", "created_at", "DESC"]],
       });
 
       // Format the data for the view
       const formattedCourses = enrolledCourses.map((course) => {
         const courseData = course.toJSON();
-        courseData.enrollment_date = courseData.enrollments[0].enrollment_date;
+        courseData.enrollment_date = courseData.enrollments[0].created_at;
         delete courseData.enrollments;
         return courseData;
       });
@@ -92,6 +92,7 @@ const userController = {
           user_id: userId,
           course_id: courseId,
         },
+        attributes: ["id", "user_id", "course_id", "created_at"],
       });
 
       if (existingEnrollment) {

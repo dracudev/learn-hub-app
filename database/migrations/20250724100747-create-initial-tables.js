@@ -91,7 +91,7 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      enrollment_date: {
+      created_at: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
       },
