@@ -1,8 +1,5 @@
-const connection = require("../config/database");
+const { User, Course, Enrollment } = require("../models");
 const { validationResult } = require("express-validator");
-const { promisify } = require("util");
-
-const query = promisify(connection.query).bind(connection);
 
 const userController = {
   showProfile: async (req, res) => {
@@ -13,32 +10,45 @@ const userController = {
 
       const userId = req.session.user.id;
 
-      const userResults = await query(
-        "SELECT id, name, email, role, profile_picture, created_at FROM users WHERE id = ?",
-        [userId]
-      );
+      const user = await User.findByPk(userId, {
+        attributes: [
+          "id",
+          "name",
+          "email",
+          "role",
+          "profile_picture",
+          "created_at",
+        ],
+      });
 
-      if (userResults.length === 0) {
+      if (!user) {
         return res.redirect("/auth/login");
       }
 
-      const user = userResults[0];
+      const enrolledCourses = await Course.findAll({
+        include: [
+          {
+            model: Enrollment,
+            as: "enrollments",
+            where: { user_id: userId },
+            attributes: ["enrollment_date"],
+          },
+        ],
+        order: [["enrollments", "enrollment_date", "DESC"]],
+      });
 
-      const enrolledResults = await query(
-        `
-        SELECT c.id, c.title, c.description, c.category, c.visibility, e.enrollment_date
-        FROM courses c
-        INNER JOIN enrollments e ON c.id = e.course_id
-        WHERE e.user_id = ?
-        ORDER BY e.enrollment_date DESC
-      `,
-        [userId]
-      );
+      // Format the data for the view
+      const formattedCourses = enrolledCourses.map((course) => {
+        const courseData = course.toJSON();
+        courseData.enrollment_date = courseData.enrollments[0].enrollment_date;
+        delete courseData.enrollments;
+        return courseData;
+      });
 
       res.render("profile", {
         title: "My Profile",
-        user: user,
-        enrolledCourses: enrolledResults,
+        user: user.toJSON(),
+        enrolledCourses: formattedCourses,
       });
     } catch (error) {
       console.error("Error loading profile:", error);
@@ -63,11 +73,9 @@ const userController = {
       const courseId = req.params.courseId;
 
       // Check if course exists
-      const courseResults = await query("SELECT id FROM courses WHERE id = ?", [
-        courseId,
-      ]);
+      const course = await Course.findByPk(courseId);
 
-      if (courseResults.length === 0) {
+      if (!course) {
         return res.status(404).render("error", {
           title: "Course Not Found",
           error: {
@@ -79,20 +87,22 @@ const userController = {
       }
 
       // Check if already enrolled
-      const enrollmentResults = await query(
-        "SELECT id FROM enrollments WHERE user_id = ? AND course_id = ?",
-        [userId, courseId]
-      );
+      const existingEnrollment = await Enrollment.findOne({
+        where: {
+          user_id: userId,
+          course_id: courseId,
+        },
+      });
 
-      if (enrollmentResults.length > 0) {
+      if (existingEnrollment) {
         return res.redirect("/courses");
       }
 
       // Enroll user
-      await query(
-        "INSERT INTO enrollments (user_id, course_id, enrollment_date) VALUES (?, ?, NOW())",
-        [userId, courseId]
-      );
+      await Enrollment.create({
+        user_id: userId,
+        course_id: courseId,
+      });
 
       res.redirect("/courses");
     } catch (err) {
@@ -117,10 +127,12 @@ const userController = {
       const userId = req.session.user.id;
       const courseId = req.params.courseId;
 
-      await query(
-        "DELETE FROM enrollments WHERE user_id = ? AND course_id = ?",
-        [userId, courseId]
-      );
+      await Enrollment.destroy({
+        where: {
+          user_id: userId,
+          course_id: courseId,
+        },
+      });
 
       // Check if request came from profile page
       const referer = req.get("Referer");

@@ -1,27 +1,37 @@
 {
-    "name": "clases",
-    "version": "1.0.0",
-    "description": "Proyecto de clase",
-    "author": "Moi",
-    "license": "ISC",
-    "type": "commonjs",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node index.js",
-        "dev": "nodemon index.js"
-    },
-    "dependencies": {
-        "bcrypt": "^6.0.0",
-        "dotenv": "^16.5.0",
-        "ejs": "^3.1.10",
-        "express": "^5.1.0",
-        "express-session": "^1.18.1",
-        "express-validator": "^7.2.1",
-        "mysql": "^2.18.1",
-        "mysql2": "^3.14.1"
-    },
-    "devDependencies": {
-        "nodemon": "^3.1.10"
-    }
+  "name": "clases",
+  "version": "1.0.0",
+  "description": "Proyecto de clase",
+  "author": "Moi",
+  "license": "ISC",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:migrate:undo": "npx sequelize-cli db:migrate:undo",
+    "db:seed": "npx sequelize-cli db:seed:all",
+    "db:seed:undo": "npx sequelize-cli db:seed:undo:all",
+    "db:reset": "npm run db:migrate:undo && npm run db:migrate && npm run db:seed",
+    "production:setup": "npm run db:migrate && npm run db:seed",
+    "deploy": "node deploy.js",
+    "deploy:seed": "node deploy.js --seed"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-session": "^1.18.1",
+    "express-validator": "^7.2.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.1",
+    "sequelize": "^6.37.7",
+    "sequelize-cli": "^6.6.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }

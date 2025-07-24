@@ -1,9 +1,6 @@
-const connection = require("../config/database");
+const { User } = require("../models");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
-const { promisify } = require("util");
-
-const query = promisify(connection.query).bind(connection);
 
 const authController = {
   getSignup: (req, res) => {
@@ -37,11 +34,11 @@ const authController = {
     }
 
     try {
-      const results = await query("SELECT * FROM users WHERE email = ?", [
-        email,
-      ]);
+      const existingUser = await User.findOne({
+        where: { email },
+      });
 
-      if (results.length > 0) {
+      if (existingUser) {
         return res.render("signup", {
           title: "Sign Up",
           message: "Email already exists.",
@@ -51,13 +48,16 @@ const authController = {
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await query(
-        "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-        [name, email, hashedPassword, "registered"]
-      );
+      await User.create({
+        name,
+        email,
+        password: hashedPassword,
+        role: "registered",
+      });
 
       res.redirect("/login");
     } catch (err) {
+      console.error("Error creating user:", err);
       res.render("signup", {
         title: "Sign Up",
         message: "Error creating user.",
@@ -97,11 +97,11 @@ const authController = {
     }
 
     try {
-      const results = await query("SELECT * FROM users WHERE email = ?", [
-        email,
-      ]);
+      const user = await User.findOne({
+        where: { email },
+      });
 
-      if (results.length === 0) {
+      if (!user) {
         return res.render("login", {
           title: "Login",
           message: "Invalid email or password.",
@@ -109,7 +109,7 @@ const authController = {
         });
       }
 
-      const isMatch = await bcrypt.compare(password, results[0].password);
+      const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
         return res.render("login", {
@@ -120,14 +120,15 @@ const authController = {
       }
 
       req.session.user = {
-        id: results[0].id,
-        name: results[0].name,
-        email: results[0].email,
-        role: results[0].role,
-        profile_picture: results[0].profile_picture,
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        profile_picture: user.profile_picture,
       };
       res.redirect("/");
     } catch (err) {
+      console.error("Error during login:", err);
       res.render("login", {
         title: "Login",
         message: "Error during login.",

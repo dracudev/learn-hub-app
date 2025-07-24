@@ -1,15 +1,12 @@
-const connection = require("../config/database");
+const { Course, Enrollment } = require("../models");
 const { validationResult } = require("express-validator");
-const { promisify } = require("util");
-
-const query = promisify(connection.query).bind(connection);
 
 const courseController = {
   list: async (req, res) => {
     try {
-      const courses = await query(
-        "SELECT id, title, description, category, visibility FROM courses"
-      );
+      const courses = await Course.findAll({
+        attributes: ["id", "title", "description", "category", "visibility"],
+      });
       res.render("admin", {
         title: "Administration page",
         message: "Welcome to the administration page",
@@ -17,6 +14,7 @@ const courseController = {
         courses: courses,
       });
     } catch (err) {
+      console.error("Error loading courses:", err);
       res.render("admin", {
         title: "Administration page",
         message: "Error loading courses.",
@@ -48,12 +46,15 @@ const courseController = {
 
     try {
       const { title, description, category, visibility } = req.body;
-      await query(
-        "INSERT INTO courses (title, description, category, visibility) VALUES (?, ?, ?, ?)",
-        [title, description, category, visibility]
-      );
-      res.redirect("/administration");
+      await Course.create({
+        title,
+        description,
+        category,
+        visibility,
+      });
+      res.redirect("/admin/dashboard");
     } catch (err) {
+      console.error("Error creating course:", err);
       res.render("course-form", {
         title: "Add Course",
         course: req.body,
@@ -65,20 +66,19 @@ const courseController = {
 
   getEdit: async (req, res) => {
     try {
-      const results = await query("SELECT * FROM courses WHERE id = ?", [
-        req.params.id,
-      ]);
-      if (results.length === 0) {
-        return res.redirect("/administration");
+      const course = await Course.findByPk(req.params.id);
+      if (!course) {
+        return res.redirect("/admin/dashboard");
       }
       res.render("course-form", {
         title: "Edit Course",
-        course: results[0],
+        course: course.toJSON(),
         errors: [],
         user: req.session.user,
       });
     } catch (err) {
-      res.redirect("/administration");
+      console.error("Error loading course:", err);
+      res.redirect("/admin/dashboard");
     }
   },
 
@@ -95,12 +95,13 @@ const courseController = {
 
     try {
       const { title, description, category, visibility } = req.body;
-      await query(
-        "UPDATE courses SET title = ?, description = ?, category = ?, visibility = ? WHERE id = ?",
-        [title, description, category, visibility, req.params.id]
+      await Course.update(
+        { title, description, category, visibility },
+        { where: { id: req.params.id } }
       );
-      res.redirect("/administration");
+      res.redirect("/admin/dashboard");
     } catch (err) {
+      console.error("Error updating course:", err);
       res.render("course-form", {
         title: "Edit Course",
         course: { ...req.body, id: req.params.id },
@@ -112,30 +113,34 @@ const courseController = {
 
   delete: async (req, res) => {
     try {
-      await query("DELETE FROM courses WHERE id = ?", [req.params.id]);
+      await Course.destroy({
+        where: { id: req.params.id },
+      });
     } catch (err) {
       console.error("Error deleting course:", err);
     }
-    res.redirect("/administration");
+    res.redirect("/admin/dashboard");
   },
 
   getAll: async (req, res) => {
     try {
-      const courses = await query(
-        "SELECT id, title, description, category, visibility FROM courses"
-      );
+      const courses = await Course.findAll({
+        attributes: ["id", "title", "description", "category", "visibility"],
+      });
 
       // If user is logged in, check enrollment status for each course
-      let coursesWithEnrollment = courses;
+      let coursesWithEnrollment = courses.map((course) => course.toJSON());
       if (req.session.user) {
         const userId = req.session.user.id;
 
         for (let course of coursesWithEnrollment) {
-          const enrollmentCheck = await query(
-            "SELECT id FROM enrollments WHERE user_id = ? AND course_id = ?",
-            [userId, course.id]
-          );
-          course.isEnrolled = enrollmentCheck.length > 0;
+          const enrollment = await Enrollment.findOne({
+            where: {
+              user_id: userId,
+              course_id: course.id,
+            },
+          });
+          course.isEnrolled = !!enrollment;
         }
       }
 
@@ -145,6 +150,7 @@ const courseController = {
         user: req.session.user,
       });
     } catch (err) {
+      console.error("Error loading courses:", err);
       res.render("courses", {
         title: "Courses",
         courses: [],
@@ -157,25 +163,27 @@ const courseController = {
   getDetails: async (req, res) => {
     try {
       const isLoggedIn = req.session.user ? true : false;
-      const visibilityCondition = isLoggedIn
-        ? "WHERE id = ?"
-        : "WHERE id = ? AND visibility = 'public'";
+      const whereCondition = { id: req.params.id };
 
-      const results = await query(
-        `SELECT * FROM courses ${visibilityCondition}`,
-        [req.params.id]
-      );
+      if (!isLoggedIn) {
+        whereCondition.visibility = "public";
+      }
 
-      if (results.length === 0) {
+      const course = await Course.findOne({
+        where: whereCondition,
+      });
+
+      if (!course) {
         return res.redirect("/courses");
       }
 
       res.render("course-details", {
-        title: results[0].title,
-        course: results[0],
+        title: course.title,
+        course: course.toJSON(),
         user: req.session.user,
       });
     } catch (err) {
+      console.error("Error loading course details:", err);
       res.redirect("/courses");
     }
   },
