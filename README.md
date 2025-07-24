@@ -1,4 +1,4 @@
-# Course Catalog App
+# LearnHub | Online Courses
 
 ## Table of Contents
 
@@ -43,8 +43,8 @@ A Node.js application for managing courses with user authentication and enrollme
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/dracudev/course-catalog-app
-   cd course-catalog
+   git clone https://github.com/dracudev/learn-hub-app
+   cd learn-hub-app
    ```
 
 2. **Install dependencies**
