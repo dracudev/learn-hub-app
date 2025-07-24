@@ -28,7 +28,7 @@ A Node.js application for managing courses with user authentication and enrollme
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/dracudev/course-catalog
+   git clone https://github.com/dracudev/course-catalog-app
    cd course-catalog
    ```
 
