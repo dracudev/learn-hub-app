@@ -3,19 +3,21 @@
 <header>
     <nav>
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/courses">Courses</a></li>
+            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="/courses"><i class="fas fa-graduation-cap"></i> Courses</a></li>
             <% if (!user) { %>
-            <li><a href="/auth/login">Login</a></li>
-            <li><a href="/auth/signup">Sign Up</a></li>
+            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <li><a href="/auth/signup"><i class="fas fa-user-plus"></i> Sign Up</a></li>
             <% } %>
             <% if (user && user.role === 'admin') { %>
-            <li><a href="/admin/dashboard">Admin</a></li>
+            <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
             <% } %>
             <% if (user) { %>
-                <li><a href="/user/profile">Profile</a></li>
+                <li><a href="/user/profile"><i class="fas fa-user"></i> Profile</a></li>
                 <li>
-                    <a href="/auth/logout" class="btn-signout">Sign Out</a>
+                    <a href="/auth/logout" class="btn-signout">
+                        <i class="fas fa-sign-out-alt"></i> Sign Out
+                    </a>
                 </li>
             <% } %>
         </ul>
