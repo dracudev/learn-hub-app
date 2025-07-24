@@ -955,3 +955,43 @@ footer p {
   color: var(--info-hover);
   border-color: var(--info-color);
 }
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+.form-actions .btn {
+  flex: 1;
+  max-width: 200px;
+}
+
+/* Auth Links */
+.auth-link {
+  text-align: center;
+  margin-top: var(--space-4);
+  color: var(--text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.auth-link a {
+  color: var(--accent-color);
+  font-weight: var(--font-weight-medium);
+}
+
+.auth-link a:hover {
+  color: var(--accent-hover);
+}
+
+/* Modern Form Class */
+.modern-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--space-8);
+  background: var(--bg-form);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+}

@@ -44,22 +44,22 @@
     </div>
 
     <div class="error-actions">
-      <a href="/" class="btn btn-primary">
+      <a href="/" class="btn btn-primary btn-lg">
         <i class="fas fa-home"></i>
         Go Home
       </a>
       <% if (typeof error !== 'undefined' && error && error.status === 404) { %>
-      <a href="/courses" class="btn">
+      <a href="/courses" class="btn btn-info btn-lg">
         <i class="fas fa-book"></i>
         Browse Courses
       </a>
       <% } else { %>
-      <button onclick="history.back()" class="btn btn-secondary">
+      <button onclick="history.back()" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-left"></i>
         Go Back
       </button>
       <% } %>
-      <button onclick="location.reload()" class="btn btn-secondary">
+      <button onclick="location.reload()" class="btn btn-secondary btn-lg">
         <i class="fas fa-redo"></i>
         Try Again
       </button>

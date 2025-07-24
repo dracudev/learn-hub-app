@@ -4,24 +4,46 @@
 <main>
   <h1><%= title %></h1>
 
-  <form action="/auth/signup" method="POST" class="auth-form">
+  <form action="/auth/signup" method="POST" class="modern-form">
     <% if (message) { %>
-    <div class="error"><%= message %></div>
+    <div class="alert alert-error">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div><%= message %></div>
+    </div>
     <% } %>
-    <div>
-      <label>Name:</label>
-      <input type="text" name="name" required />
+    <div class="form-group">
+      <label for="name" class="form-label">Name:</label>
+      <input type="text" id="name" name="name" class="form-control" required />
     </div>
-    <div>
-      <label>Email:</label>
-      <input type="email" name="email" required />
+    <div class="form-group">
+      <label for="email" class="form-label">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        class="form-control"
+        required
+      />
     </div>
-    <div>
-      <label>Password:</label>
-      <input type="password" name="password" required />
+    <div class="form-group">
+      <label for="password" class="form-label">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        class="form-control"
+        required
+      />
     </div>
-    <button type="submit">Sign Up</button>
-    <p>Already have an account? <a href="/auth/login">Login</a></p>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success btn-lg">
+        <i class="fas fa-user-plus"></i>
+        Sign Up
+      </button>
+    </div>
+    <p class="auth-link">
+      Already have an account? <a href="/auth/login">Login</a>
+    </p>
   </form>
 </main>
 <%- include('partials/footer') %>
