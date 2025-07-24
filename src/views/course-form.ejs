@@ -5,67 +5,70 @@
   <h1><%= title %></h1>
 
   <% if (errors && errors.length > 0) { %>
-  <div class="error">
-    <% errors.forEach(function(err) { %>
-    <div><%= err.msg %></div>
-    <% }) %>
+  <div class="alert alert-error">
+    <i class="fas fa-exclamation-triangle"></i>
+    <div>
+      <% errors.forEach(function(err) { %>
+      <div><%= err.msg %></div>
+      <% }) %>
+    </div>
   </div>
   <% } %>
 
   <form
     action="<%= course.id ? '/courses/' + course.id + '/edit' : '/courses/create' %>"
     method="POST"
-    class="auth-form"
+    class="modern-form"
     autocomplete="off"
   >
-    <div>
-      <label for="title">Title:</label>
+    <div class="form-group">
+      <label for="title" class="form-label">Title:</label>
       <input
         type="text"
         id="title"
         name="title"
+        class="form-control"
         value="<%= course.title || '' %>"
         required
       />
     </div>
-    <div>
-      <label for="description">Description:</label>
+    <div class="form-group">
+      <label for="description" class="form-label">Description:</label>
       <textarea
         id="description"
         name="description"
+        class="form-control"
         rows="4"
         required
       ><%= course.description || '' %></textarea>
     </div>
-    <div>
-      <label for="category">Category:</label>
+    <div class="form-group">
+      <label for="category" class="form-label">Category:</label>
       <input
         type="text"
         id="category"
         name="category"
+        class="form-control"
         value="<%= course.category || '' %>"
         required
       />
     </div>
-    <div>
-      <label for="visibility">Visibility:</label>
-      <select id="visibility" name="visibility" required>
+    <div class="form-group">
+      <label for="visibility" class="form-label">Visibility:</label>
+      <select id="visibility" name="visibility" class="form-control" required>
         <option value="public" <%= (course.visibility === 'public') ? 'selected' : '' %>>Public</option>
         <option value="private" <%= (course.visibility === 'private') ? 'selected' : '' %>>Private</option>
       </select>
     </div>
-    <button type="submit">
-      <%= course.id ? 'Update' : 'Create' %> Course
-    </button>
-    <a
-      href="/admin/dashboard"
-      class="btn-edit"
-      style="
-        text-decoration: none;
-        width: 100%;
-        padding: 0.8rem;
-        margin-top: 0.5rem;
-      ">Cancel</a
-    >
+    <div class="form-actions">
+      <button type="submit" class="btn btn-success btn-lg">
+        <i class="fas fa-<%= course.id ? 'save' : 'plus' %>"></i>
+        <%= course.id ? 'Update' : 'Create' %> Course
+      </button>
+      <a href="/admin/dashboard" class="btn btn-secondary btn-lg">
+        <i class="fas fa-times"></i>
+        Cancel
+      </a>
+    </div>
   </form>
 </main>
