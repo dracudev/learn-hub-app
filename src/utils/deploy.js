@@ -1,11 +1,6 @@
 #!/usr/bin/env node
 
-/**
- * Production deployment script for Course Catalog Application
- * This script sets up the database for production environment
- */
-
-const database = require("./database");
+const database = require("../../database");
 
 async function deployProduction() {
   try {

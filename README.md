@@ -26,18 +26,21 @@ A Node.js application for managing courses with user authentication and enrollme
 ### Development Environment
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/dracudev/course-catalog
    cd course-catalog
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
    Create a `.env` file in the root directory:
+
    ```env
    PORT=4000
    DB_HOST=localhost
@@ -50,6 +53,7 @@ A Node.js application for managing courses with user authentication and enrollme
    ```
 
 4. **Set up the database**
+
    ```bash
    # Run migrations to create tables
    npm run db:migrate
@@ -59,6 +63,7 @@ A Node.js application for managing courses with user authentication and enrollme
    ```
 
 5. **Start the development server**
+
    ```bash
    npm run dev
    ```
@@ -68,16 +73,19 @@ A Node.js application for managing courses with user authentication and enrollme
 After seeding, you can log in with:
 
 **Admin User:**
-- Email: admin@courses.com
+
+- Email: <admin@courses.com>
 - Password: admin123
 
 **Regular User:**
-- Email: john@email.com
+
+- Email: <john@email.com>
 - Password: user123
 
 ## API Routes
 
 ### Authentication
+
 - `GET /auth/signup` - Sign up form
 - `POST /auth/signup` - Create new user
 - `GET /auth/login` - Login form
@@ -85,6 +93,7 @@ After seeding, you can log in with:
 - `POST /auth/logout` - Logout user
 
 ### Courses
+
 - `GET /courses` - List all courses
 - `GET /courses/:id` - Course details
 - `GET /administration` - Admin dashboard (admin only)
@@ -95,6 +104,7 @@ After seeding, you can log in with:
 - `DELETE /courses/:id` - Delete course (admin only)
 
 ### User Profile
+
 - `GET /user/profile` - User profile and enrolled courses
 - `POST /user/enroll/:courseId` - Enroll in course
 - `POST /user/unenroll/:courseId` - Unenroll from course
@@ -112,7 +122,7 @@ After seeding, you can log in with:
 
 ## File Structure
 
-```
+```tree
 ├── app.js                 # Main application file
 ├── package.json
 ├── .env                   # Environment variables
@@ -166,6 +176,7 @@ After seeding, you can log in with:
 ## Database Schema
 
 ### Users Table
+
 - `id` (Primary Key)
 - `name`
 - `email` (Unique)
@@ -175,6 +186,7 @@ After seeding, you can log in with:
 - `created_at`
 
 ### Courses Table
+
 - `id` (Primary Key)
 - `title`
 - `description`
@@ -183,12 +195,12 @@ After seeding, you can log in with:
 - `created_at`
 
 ### Enrollments Table
+
 - `id` (Primary Key)
 - `user_id` (Foreign Key)
 - `course_id` (Foreign Key)
 - `enrollment_date`
 - Unique constraint on (user_id, course_id)
-
 
 ## Database Architecture
 
