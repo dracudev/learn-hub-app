@@ -1,8 +1,259 @@
-<%- include('partials/head') %> <%- include('partials/header') %>
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/styles/course-details.css" />
+<%- include('partials/header') %>
+
 <main>
-  <h1><%= course.title %></h1>
-  <p><%= course.description %></p>
-  <p>Category: <%= course.category %></p>
-  <p>Visibility: <%= course.visibility %></p>
+  <!-- Course Hero Section -->
+  <section class="course-hero">
+    <div class="course-hero-content">
+      <div class="course-header">
+        <div class="course-category-badge">
+          <i class="fas fa-tag"></i>
+          <%= course.category %>
+        </div>
+        <div class="course-visibility-badge <%= course.visibility %>">
+          <i
+            class="fas <%= course.visibility === 'public' ? 'fa-globe' : 'fa-lock' %>"
+          ></i>
+          <%= course.visibility %>
+        </div>
+      </div>
+
+      <h1 class="course-title"><%= course.title %></h1>
+
+      <div class="course-meta">
+        <div class="course-meta-item">
+          <i class="fas fa-calendar-plus"></i>
+          <span
+            >Created: <%= course.created_at ? new
+            Date(course.created_at).toLocaleDateString() : 'Unknown' %></span
+          >
+        </div>
+        <div class="course-meta-item">
+          <i class="fas fa-clock"></i>
+          <span
+            >Last Updated: <%= course.updated_at ? new
+            Date(course.updated_at).toLocaleDateString() : 'Unknown' %></span
+          >
+        </div>
+        <% if (course.instructor) { %>
+        <div class="course-meta-item">
+          <i class="fas fa-user-tie"></i>
+          <span>Instructor: <%= course.instructor %></span>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Course Content Section -->
+  <section class="course-content">
+    <div class="course-content-grid">
+      <!-- Main Content -->
+      <div class="course-main">
+        <div class="course-description-card">
+          <h2>
+            <i class="fas fa-info-circle"></i>
+            Course Description
+          </h2>
+          <div class="course-description"><%= course.description %></div>
+        </div>
+
+        <!-- Course Features -->
+        <div class="course-features-card">
+          <h3>
+            <i class="fas fa-star"></i>
+            What You'll Learn
+          </h3>
+          <div class="course-features">
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Comprehensive understanding of <%= course.category %></span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Practical hands-on experience</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Industry best practices and real-world applications</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-check-circle"></i>
+              <span>Certificate of completion</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Course Requirements -->
+        <div class="course-requirements-card">
+          <h3>
+            <i class="fas fa-clipboard-list"></i>
+            Requirements
+          </h3>
+          <div class="requirements-list">
+            <div class="requirement-item">
+              <i class="fas fa-laptop"></i>
+              <span>Access to a computer with internet connection</span>
+            </div>
+            <div class="requirement-item">
+              <i class="fas fa-brain"></i>
+              <span>Eagerness to learn and practice</span>
+            </div>
+            <div class="requirement-item">
+              <i class="fas fa-graduation-cap"></i>
+              <span
+                >Basic understanding of the subject area (helpful but not
+                required)</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="course-sidebar">
+        <!-- Enrollment Card -->
+        <div class="enrollment-card">
+          <div class="course-price">
+            <span class="price-label">Course Access</span>
+            <span class="price-value">Free</span>
+          </div>
+
+          <div class="enrollment-actions">
+            <% if (user) { %>
+            <form action="/user/enroll/<%= course.id %>" method="POST">
+              <button type="submit" class="btn btn-success btn-lg">
+                <i class="fas fa-play"></i>
+                Enroll Now
+              </button>
+            </form>
+            <% } else { %>
+            <div class="login-prompt">
+              <p>Please log in to enroll in this course</p>
+              <a href="/auth/login" class="btn btn-primary btn-lg">
+                <i class="fas fa-sign-in-alt"></i>
+                Login to Enroll
+              </a>
+            </div>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Course Stats -->
+        <div class="course-stats-card">
+          <h3>
+            <i class="fas fa-chart-bar"></i>
+            Course Statistics
+          </h3>
+          <div class="stats-list">
+            <div class="stat-item">
+              <i class="fas fa-users"></i>
+              <div class="stat-content">
+                <span class="stat-label">Students Enrolled</span>
+                <span class="stat-value">-</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-star"></i>
+              <div class="stat-content">
+                <span class="stat-label">Course Rating</span>
+                <span class="stat-value">4.8/5.0</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-language"></i>
+              <div class="stat-content">
+                <span class="stat-label">Language</span>
+                <span class="stat-value">English</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <i class="fas fa-infinity"></i>
+              <div class="stat-content">
+                <span class="stat-label">Access</span>
+                <span class="stat-value">Lifetime</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Share Course -->
+        <div class="share-card">
+          <h3>
+            <i class="fas fa-share-alt"></i>
+            Share This Course
+          </h3>
+          <div class="share-buttons">
+            <button class="share-btn twitter" onclick="shareOnTwitter()">
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button class="share-btn facebook" onclick="shareOnFacebook()">
+              <i class="fab fa-facebook"></i>
+            </button>
+            <button class="share-btn linkedin" onclick="shareOnLinkedIn()">
+              <i class="fab fa-linkedin"></i>
+            </button>
+            <button class="share-btn copy" onclick="copyLink()">
+              <i class="fas fa-link"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Navigation Actions -->
+  <section class="course-navigation">
+    <div class="nav-actions">
+      <a href="/courses" class="btn btn-secondary btn-lg">
+        <i class="fas fa-arrow-left"></i>
+        Back to Courses
+      </a>
+      <% if (user && user.role === 'admin') { %>
+      <a href="/courses/<%= course.id %>/edit" class="btn btn-info btn-lg">
+        <i class="fas fa-edit"></i>
+        Edit Course
+      </a>
+      <% } %>
+    </div>
+  </section>
 </main>
+
+<script>
+  function shareOnTwitter() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(
+      `Check out this course: <%= course.title %>`
+    );
+    window.open(
+      `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
+      "_blank"
+    );
+  }
+
+  function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      "_blank"
+    );
+  }
+
+  function shareOnLinkedIn() {
+    const url = encodeURIComponent(window.location.href);
+    const title = encodeURIComponent("<%= course.title %>");
+    window.open(
+      `https://www.linkedin.com/sharing/share-offsite/?url=${url}&title=${title}`,
+      "_blank"
+    );
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      alert("Course link copied to clipboard!");
+    });
+  }
+</script>
+
 <%- include('partials/footer') %>
