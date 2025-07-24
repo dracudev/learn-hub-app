@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const authController = {
   getSignup: (req, res) => {
     res.render("signup", {
-      title: "Sign Up",
+      title: "LearnHub | Sign Up",
       message: "",
       user: req.session.user,
     });
@@ -15,7 +15,7 @@ const authController = {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render("signup", {
-        title: "Sign Up",
+        title: "LearnHub | Sign Up",
         message: errors
           .array()
           .map((e) => e.msg)
@@ -27,7 +27,7 @@ const authController = {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res.render("signup", {
-        title: "Sign Up",
+        title: "LearnHub | Sign Up",
         message: "Please fill in all fields.",
         user: req.session.user,
       });
@@ -40,7 +40,7 @@ const authController = {
 
       if (existingUser) {
         return res.render("signup", {
-          title: "Sign Up",
+          title: "LearnHub | Sign Up",
           message: "Email already exists.",
           user: req.session.user,
         });
@@ -58,7 +58,7 @@ const authController = {
       res.redirect("/login");
     } catch (err) {
       console.error("Error creating user:", err);
-      res.render("signup", {
+      res.render("LearnHub | signup", {
         title: "Sign Up",
         message: "Error creating user.",
         user: req.session.user,
@@ -78,7 +78,7 @@ const authController = {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render("login", {
-        title: "Login",
+        title: "LearnHub | Login",
         message: errors
           .array()
           .map((e) => e.msg)
@@ -90,7 +90,7 @@ const authController = {
     const { email, password } = req.body;
     if (!email || !password) {
       return res.render("login", {
-        title: "Login",
+        title: "LearnHub | Login",
         message: "Please fill in all fields.",
         user: req.session.user,
       });
@@ -103,7 +103,7 @@ const authController = {
 
       if (!user) {
         return res.render("login", {
-          title: "Login",
+          title: "LearnHub | Login",
           message: "Invalid email or password.",
           user: req.session.user,
         });
@@ -113,7 +113,7 @@ const authController = {
 
       if (!isMatch) {
         return res.render("login", {
-          title: "Login",
+          title: "LearnHub | Login",
           message: "Invalid email or password.",
           user: req.session.user,
         });
@@ -130,7 +130,7 @@ const authController = {
     } catch (err) {
       console.error("Error during login:", err);
       res.render("login", {
-        title: "Login",
+        title: "LearnHub | Login",
         message: "Error during login.",
         user: req.session.user,
       });

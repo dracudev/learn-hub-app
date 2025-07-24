@@ -8,7 +8,7 @@ const courseController = {
         attributes: ["id", "title", "description", "category", "visibility"],
       });
       res.render("admin", {
-        title: "Admin",
+        title: "LearnHub | Admin",
         message: "Welcome to the administration page",
         user: req.session.user,
         courses: courses,
@@ -16,7 +16,7 @@ const courseController = {
     } catch (err) {
       console.error("Error loading courses:", err);
       res.render("admin", {
-        title: "Administration page",
+        title: "LearnHub | Admin",
         message: "Error loading courses.",
         user: req.session.user,
         courses: [],
@@ -26,7 +26,7 @@ const courseController = {
 
   getCreate: (req, res) => {
     res.render("course-form", {
-      title: "Add Course",
+      title: "LearnHub | Add Course",
       course: {},
       errors: [],
       user: req.session.user,
@@ -37,7 +37,7 @@ const courseController = {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render("course-form", {
-        title: "Add Course",
+        title: "LearnHub | Add Course",
         course: req.body,
         errors: errors.array(),
         user: req.session.user,
@@ -56,7 +56,7 @@ const courseController = {
     } catch (err) {
       console.error("Error creating course:", err);
       res.render("course-form", {
-        title: "Add Course",
+        title: "LearnHub | Add Course",
         course: req.body,
         errors: [{ msg: "Error creating course." }],
         user: req.session.user,
@@ -71,7 +71,7 @@ const courseController = {
         return res.redirect("/admin/dashboard");
       }
       res.render("course-form", {
-        title: "Edit Course",
+        title: "LearnHub | Edit Course",
         course: course.toJSON(),
         errors: [],
         user: req.session.user,
@@ -86,7 +86,7 @@ const courseController = {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render("course-form", {
-        title: "Edit Course",
+        title: "LearnHub | Edit Course",
         course: { ...req.body, id: req.params.id },
         errors: errors.array(),
         user: req.session.user,
@@ -103,7 +103,7 @@ const courseController = {
     } catch (err) {
       console.error("Error updating course:", err);
       res.render("course-form", {
-        title: "Edit Course",
+        title: "LearnHub | Edit Course",
         course: { ...req.body, id: req.params.id },
         errors: [{ msg: "Error updating course." }],
         user: req.session.user,
@@ -146,14 +146,14 @@ const courseController = {
       }
 
       res.render("courses", {
-        title: "Courses",
+        title: "LearnHub | Courses",
         courses: coursesWithEnrollment,
         user: req.session.user,
       });
     } catch (err) {
       console.error("Error loading courses:", err);
       res.render("courses", {
-        title: "Courses",
+        title: "LearnHub | Courses",
         courses: [],
         user: req.session.user,
         message: "Error loading courses.",
@@ -179,7 +179,7 @@ const courseController = {
       }
 
       res.render("course-details", {
-        title: course.title,
+        title: `LearnHub | ${course.title}`,
         course: course.toJSON(),
         user: req.session.user,
       });
