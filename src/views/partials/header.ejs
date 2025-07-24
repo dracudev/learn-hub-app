@@ -1,25 +1,69 @@
 </head>
 <body>
 <header>
-    <nav>
-        <ul>
-            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-            <li><a href="/courses"><i class="fas fa-graduation-cap"></i> Courses</a></li>
-            <% if (!user) { %>
-            <li><a href="/auth/login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-            <li><a href="/auth/signup"><i class="fas fa-user-plus"></i> Sign Up</a></li>
-            <% } %>
-            <% if (user && user.role === 'admin') { %>
-            <li><a href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
-            <% } %>
-            <% if (user) { %>
-                <li><a href="/user/profile"><i class="fas fa-user"></i> Profile</a></li>
-                <li>
-                    <a href="/auth/logout" class="btn-signout">
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="/" class="brand-link">
+                <i class="fas fa-graduation-cap"></i>
+                Course Catalog
+            </a>
+        </div>
+        
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+
+        <div class="nav-menu" id="navMenu">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="/" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+                <li class="nav-item"><a href="/courses" class="nav-link"><i class="fas fa-graduation-cap"></i> Courses</a></li>
+                <% if (!user) { %>
+                <li class="nav-item"><a href="/auth/login" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                <li class="nav-item"><a href="/auth/signup" class="nav-link"><i class="fas fa-user-plus"></i> Sign Up</a></li>
+                <% } %>
+                <% if (user && user.role === 'admin') { %>
+                <li class="nav-item"><a href="/admin/dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i> Admin</a></li>
+                <% } %>
+                <% if (user) { %>
+                <li class="nav-item"><a href="/user/profile" class="nav-link"><i class="fas fa-user"></i> Profile</a></li>
+                <li class="nav-item">
+                    <a href="/auth/logout" class="nav-link btn-signout">
                         <i class="fas fa-sign-out-alt"></i> Sign Out
                     </a>
                 </li>
-            <% } %>
-        </ul>
+                <% } %>
+            </ul>
+        </div>
     </nav>
 </header>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    navToggle.addEventListener('click', function() {
+        navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active');
+    });
+    
+    // Close menu when clicking on a link (mobile)
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+        });
+    });
+    
+    // Close menu when clicking outside (mobile)
+    document.addEventListener('click', function(e) {
+        if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+            navMenu.classList.remove('active');
+            navToggle.classList.remove('active');
+        }
+    });
+});
+</script>
