@@ -21,13 +21,13 @@ A Node.js application for managing courses with user authentication and enrollme
 
 ## Features
 
-- User authentication (sign up, login, logout)
-- Role-based access (public, registered, admin)
-- Course management (CRUD operations)
-- Course enrollment system
-- Admin dashboard
-- User profiles
-- Database abstraction layer (easy ORM switching)
+- 🔐 User authentication (sign up, login, logout)
+- 👥 Role-based access (public, registered, admin)
+- 📚 Course management (CRUD operations)
+- 📝 Course enrollment system
+- 🛠️ Admin dashboard
+- 👤 User profiles
+- 🗄️ Database abstraction layer (easy ORM switching)
 
 ## Technologies Used
 
@@ -217,7 +217,7 @@ After seeding, you can log in with:
 
 ## Database Architecture
 
-### **🏗️ Abstraction Layers:**
+### **Abstraction Layers:**
 
 1. **📊 Schemas** (`/database/schemas/`): ORM-agnostic data definitions
 2. **🏭 Model Factory** (`/database/factories/`): Converts schemas to ORM models  
