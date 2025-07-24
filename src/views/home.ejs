@@ -1,6 +1,132 @@
-<%- include('partials/head') %> <%- include('partials/header') %>
+<%- include('partials/head') %>
+<link rel="stylesheet" href="/styles/home.css" />
+<%- include('partials/header') %>
+
 <main>
-  <h1 class="text-center"><%= title %></h1>
-  <p class="text-center"><%= message %></p>
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <h1 class="hero-title"><%= title %></h1>
+      <p class="hero-subtitle"><%= message %></p>
+      <div class="hero-actions">
+        <a href="/courses" class="btn btn-primary btn-lg">
+          <i class="fas fa-book-open"></i>
+          Explore Courses
+        </a>
+        <% if (!user) { %>
+        <a href="/auth/signup" class="btn btn-outline btn-lg">
+          <i class="fas fa-user-plus"></i>
+          Get Started
+        </a>
+        <% } else { %>
+        <a href="/user/profile" class="btn btn-outline btn-lg">
+          <i class="fas fa-user"></i>
+          My Profile
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="features-container">
+      <h2 class="features-title">Why Choose Our Platform?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h3>Fast Learning</h3>
+          <p>
+            Accelerate your skills with our optimized learning paths and
+            interactive content.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Expert Instructors</h3>
+          <p>
+            Learn from industry professionals with years of real-world
+            experience.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-certificate"></i>
+          </div>
+          <h3>Certifications</h3>
+          <p>
+            Earn recognized certificates to showcase your achievements and
+            advance your career.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3>Flexible Schedule</h3>
+          <p>
+            Study at your own pace with 24/7 access to all course materials and
+            resources.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="stats-container">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number">500+</div>
+          <div class="stat-label">Courses Available</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">10k+</div>
+          <div class="stat-label">Students Enrolled</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">95%</div>
+          <div class="stat-label">Completion Rate</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">4.8★</div>
+          <div class="stat-label">Average Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to Start Learning?</h2>
+      <p>
+        Join thousands of students already advancing their careers with our
+        courses.
+      </p>
+      <div class="cta-actions">
+        <% if (!user) { %>
+        <a href="/auth/signup" class="btn btn-success btn-lg">
+          <i class="fas fa-play"></i>
+          Start Learning Today
+        </a>
+        <% } else { %>
+        <a href="/courses" class="btn btn-success btn-lg">
+          <i class="fas fa-search"></i>
+          Browse Courses
+        </a>
+        <% } %>
+      </div>
+    </div>
+  </section>
 </main>
+
 <%- include('partials/footer') %>
