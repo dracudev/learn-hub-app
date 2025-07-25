@@ -23,22 +23,6 @@
   overflow: hidden;
 }
 
-.profile-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--accent-color),
-    var(--info-color),
-    var(--success-color)
-  );
-  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
-}
-
 .profile-avatar {
   flex-shrink: 0;
   position: relative;
