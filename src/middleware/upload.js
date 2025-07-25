@@ -8,22 +8,18 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Configure storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadsDir);
   },
   filename: function (req, file, cb) {
-    // Generate unique filename with timestamp and random number
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const extension = path.extname(file.originalname);
     cb(null, "profile-" + uniqueSuffix + extension);
   },
 });
 
-// File filter for images only
 const fileFilter = (req, file, cb) => {
-  // Check if file is an image
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {

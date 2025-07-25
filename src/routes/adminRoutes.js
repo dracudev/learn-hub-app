@@ -6,8 +6,4 @@ router.get("/dashboard", function (req, res, next) {
   return courseController.list(req, res);
 });
 
-router.get("/", function (req, res, next) {
-  return courseController.list(req, res);
-});
-
 module.exports = router;

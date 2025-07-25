@@ -553,7 +553,6 @@
     white-space: nowrap;
   }
 
-  /* Improve button spacing in mobile cards */
   .table-actions form {
     flex: 0 0 auto;
     min-width: 70px;

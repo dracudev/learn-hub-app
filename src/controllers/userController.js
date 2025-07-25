@@ -74,7 +74,6 @@ const userController = {
       const userId = req.session.user.id;
       const courseId = req.params.courseId;
 
-      // Check if course exists
       const course = await Course.findByPk(courseId);
 
       if (!course) {
@@ -88,7 +87,6 @@ const userController = {
         });
       }
 
-      // Check if already enrolled
       const existingEnrollment = await Enrollment.findOne({
         where: {
           user_id: userId,
@@ -101,7 +99,6 @@ const userController = {
         return res.redirect("/courses");
       }
 
-      // Enroll user
       await Enrollment.create({
         user_id: userId,
         course_id: courseId,
@@ -137,7 +134,6 @@ const userController = {
         },
       });
 
-      // Check if request came from profile page
       const referer = req.get("Referer");
       if (referer && referer.includes("/profile")) {
         res.redirect("/user/profile");
@@ -174,7 +170,7 @@ const userController = {
         return res.status(404).json({ error: "User not found" });
       }
 
-      // Delete old profile picture if it exists and is not the default
+      // Delete old profile picture if it exists
       if (
         user.profile_picture &&
         !user.profile_picture.includes("default-avatar.png")
@@ -189,7 +185,6 @@ const userController = {
         }
       }
 
-      // Update user with new profile picture path
       const newProfilePicturePath = `/uploads/${req.file.filename}`;
       await user.update({ profile_picture: newProfilePicturePath });
 
