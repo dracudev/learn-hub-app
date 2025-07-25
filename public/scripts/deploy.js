@@ -21,7 +21,7 @@ async function deploy() {
     await sequelize.authenticate();
     console.log("✅ Database connection successful!");
 
-    // Run migrations using CLI (simpler approach)
+    // Run migrations
     console.log("📦 Running migrations...");
     await new Promise((resolve, reject) => {
       exec(
@@ -37,6 +37,41 @@ async function deploy() {
         }
       );
     });
+
+    // Check if database needs seeding
+    console.log("🔍 Checking if database needs seeding...");
+    try {
+      const [results] = await sequelize.query(
+        "SELECT COUNT(*) as count FROM users"
+      );
+      const userCount = results[0].count;
+      console.log(`📊 Found ${userCount} users in database`);
+
+      if (userCount === 0) {
+        console.log("🌱 Database appears empty, running seeders...");
+        await new Promise((resolve, reject) => {
+          exec(
+            "NODE_ENV=production npx sequelize-cli db:seed:all",
+            (error, stdout, stderr) => {
+              if (error) {
+                console.error("⚠️ Seeder error (non-critical):", error.message);
+                resolve(); // Don't fail deployment for seeder issues
+              } else {
+                console.log("✅ Sample data created successfully!");
+                console.log("👤 Demo users:");
+                console.log("   - Admin: admin@admin.com / admin");
+                console.log("   - User: user@user.com / user");
+                resolve();
+              }
+            }
+          );
+        });
+      } else {
+        console.log("📋 Database has existing data, skipping seeders");
+      }
+    } catch (seedError) {
+      console.log("⚠️ Could not check for existing data, skipping seeders");
+    }
 
     // Start the app
     console.log("🎯 Starting application...");
