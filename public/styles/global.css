@@ -403,7 +403,6 @@ header {
     transform: none;
   }
 
-  /* Center sign out button in mobile menu and make it same size */
   .nav-item .btn {
     width: 100%;
     justify-content: center;
@@ -525,7 +524,6 @@ footer p {
     padding: var(--space-4);
     width: calc(100% - var(--space-4));
     border-radius: var(--radius-xl);
-    /* Ensure main takes full available width */
     max-width: none;
   }
 
@@ -554,7 +552,6 @@ footer p {
     font-size: var(--font-size-xl);
   }
 
-  /* Stack form buttons on tablets if needed */
   .form-actions {
     flex-wrap: wrap;
     gap: var(--space-3);
@@ -575,7 +572,6 @@ footer p {
     margin: var(--space-2) auto;
     padding: var(--space-2);
     width: calc(100% - var(--space-2));
-    /* Ensure main takes nearly full width on very small screens */
     max-width: none;
   }
 
@@ -584,7 +580,6 @@ footer p {
     margin-top: var(--space-4);
   }
 
-  /* Stack form buttons vertically on mobile */
   .form-actions {
     flex-direction: column;
     align-items: center;
@@ -597,7 +592,7 @@ footer p {
   }
 }
 
-/* Enhanced Utility Classes */
+/* Utility Classes */
 .text-center {
   text-align: center;
 }
@@ -715,7 +710,7 @@ footer p {
   gap: var(--space-6);
 }
 
-/* Modern Button System */
+/* Button System */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -1031,7 +1026,7 @@ footer p {
   color: var(--accent-hover);
 }
 
-/* Modern Form Class */
+/* Form Class */
 .modern-form {
   max-width: 400px;
   margin: 0 auto;

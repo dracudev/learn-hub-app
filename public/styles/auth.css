@@ -159,7 +159,6 @@
   font-size: var(--font-size-sm);
 }
 
-/* Style only text links in auth forms, not button-styled anchors */
 .auth-form p a {
   color: var(--accent-color);
   text-decoration: none;
@@ -172,7 +171,6 @@
   text-decoration: underline;
 }
 
-/* Enhanced Error and Success Messages */
 .auth-form .error,
 .auth-form .success {
   text-align: center;
