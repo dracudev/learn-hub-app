@@ -89,13 +89,13 @@ After seeding, you can log in with:
 
 **Admin User:**
 
-- Email: <admin@courses.com>
-- Password: admin123
+- Email: <admin@admin.com>
+- Password: admin
 
 **Regular User:**
 
-- Email: <john@email.com>
-- Password: user123
+- Email: <user@user.com>
+- Password: user
 
 ## API Routes
 
