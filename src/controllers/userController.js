@@ -48,7 +48,7 @@ const userController = {
       });
 
       res.render("profile", {
-        title: "LearnHub | My Profile",
+        title: "My Profile",
         user: user.toJSON(),
         enrolledCourses: formattedCourses,
       });
@@ -79,7 +79,7 @@ const userController = {
 
       if (!course) {
         return res.status(404).render("error", {
-          title: "LearnHub | Course Not Found",
+          title: "Course Not Found",
           error: {
             status: 404,
             message: "The course you're trying to enroll in doesn't exist",
@@ -111,7 +111,7 @@ const userController = {
     } catch (err) {
       console.error("Error enrolling in course:", err);
       res.status(500).render("error", {
-        title: "LearnHub | Enrollment Error",
+        title: "Enrollment Error",
         error: {
           status: 500,
           message: "Failed to enroll in course",
@@ -147,7 +147,7 @@ const userController = {
     } catch (err) {
       console.error("Error unenrolling from course:", err);
       res.status(500).render("error", {
-        title: "LearnHub | Unenrollment Error",
+        title: "Unenrollment Error",
         error: {
           status: 500,
           message: "Failed to unenroll from course",

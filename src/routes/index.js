@@ -14,7 +14,7 @@ router.get("/", function (req, res) {
     message = "You are not logged in.";
   }
   res.render("home", {
-    title: "LearnHub | Home",
+    title: "Home",
     message: message,
     user: req.session.user,
   });
