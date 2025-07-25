@@ -8,12 +8,12 @@ async function deploy() {
 
     // Debug environment
     console.log("🔍 Environment variables:");
-    console.log("DATABASE_URL:", process.env.DATABASE_URL ? "SET" : "NOT_SET");
-    console.log("MYSQL_HOST:", process.env.MYSQL_HOST || "NOT_SET");
+    console.log("MYSQL_URL:", process.env.MYSQL_URL ? "SET" : "NOT_SET");
+    console.log("MYSQLHOST:", process.env.MYSQLHOST || "NOT_SET");
 
-    // Test direct database connection
+    // Test direct database connection using MYSQL_URL
     console.log("🔌 Testing direct database connection...");
-    const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    const sequelize = new Sequelize(process.env.MYSQL_URL, {
       dialect: "mysql",
       dialectOptions: {
         ssl: {
