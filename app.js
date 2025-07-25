@@ -3,58 +3,40 @@ let app = express();
 let path = require("path");
 require("dotenv").config({ path: "./.env" });
 
-// Add express-session
-const session = require("express-session");
-
-// Import abstracted database layer
+const { configureSession } = require("./src/middleware/session");
 const database = require("./database");
-
-// Import routes
 const routes = require("./src/routes/index");
 
+// Middlewares
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "src", "views"));
+app.use(configureSession());
 
-// Configure session middleware
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "default_secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false }, // Set to true if using HTTPS
-  })
-);
-
-// Use routes
+// Routes
 app.use("/", routes);
 
-// Database connection (abstracted)
+// Database connection
 async function startServer() {
   try {
     const sequelize = await database.connect();
+    const port = process.env.PORT || 3000;
 
-    // DISABLED: Sync database (causing too many constraints)
-    // Use migrations instead: npm run db:migrate
-    // if (process.env.NODE_ENV !== "production") {
-    //   await sequelize.sync({ alter: true });
-    //   console.log("Database synced successfully.");
-    // }
-
-    app.listen(process.env.PORT, () => {
-      console.log("Server listening on port " + process.env.PORT);
+    app.listen(port, "0.0.0.0", () => {
+      console.log(`✅ Server listening on port ${port}`);
+      console.log(`🌐 Environment: ${process.env.NODE_ENV || "development"}`);
     });
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("❌ Unable to connect to the database:", error);
     process.exit(1);
   }
 }
 
 startServer();
 
-// Close connection when app terminates
 process.on("SIGINT", async () => {
+  console.log("🛑 Shutting down gracefully...");
   await database.disconnect();
   process.exit(0);
 });
