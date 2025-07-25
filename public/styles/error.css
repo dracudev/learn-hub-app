@@ -63,6 +63,10 @@
   -webkit-text-fill-color: transparent;
 }
 
+.error-container h1::after {
+  display: none;
+}
+
 .error-message {
   color: var(--text-secondary);
   font-size: var(--font-size-xl);

@@ -377,7 +377,7 @@ header {
   .nav-list {
     flex-direction: column;
     gap: 0;
-    padding: var(--space-4) 0;
+    padding: 0;
     width: 100%;
   }
 
@@ -395,11 +395,22 @@ header {
     padding: var(--space-4);
     justify-content: center;
     border-radius: 0;
+    margin: 0;
   }
 
   .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.15);
     transform: none;
+  }
+
+  /* Center sign out button in mobile menu and make it same size */
+  .nav-item .btn {
+    width: 100%;
+    justify-content: center;
+    border-radius: 0;
+    margin: 0;
+    padding: var(--space-4);
+    font-size: var(--font-size-base);
   }
 }
 
@@ -431,6 +442,7 @@ main::before {
 main h1 {
   color: var(--primary-color);
   margin-bottom: var(--space-6);
+  margin-top: var(--space-8);
   text-align: center;
   position: relative;
   padding-bottom: var(--space-4);
@@ -510,13 +522,16 @@ footer p {
 
   main {
     margin: var(--space-4) auto;
-    padding: var(--space-6);
+    padding: var(--space-4);
     width: calc(100% - var(--space-4));
     border-radius: var(--radius-xl);
+    /* Ensure main takes full available width */
+    max-width: none;
   }
 
   main h1 {
     font-size: var(--font-size-3xl);
+    margin-top: var(--space-6);
   }
 
   main p {
@@ -538,6 +553,16 @@ footer p {
   h3 {
     font-size: var(--font-size-xl);
   }
+
+  /* Stack form buttons on tablets if needed */
+  .form-actions {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .form-actions .btn {
+    min-width: 120px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -548,12 +573,27 @@ footer p {
 
   main {
     margin: var(--space-2) auto;
-    padding: var(--space-4);
+    padding: var(--space-2);
     width: calc(100% - var(--space-2));
+    /* Ensure main takes nearly full width on very small screens */
+    max-width: none;
   }
 
   main h1 {
     font-size: var(--font-size-2xl);
+    margin-top: var(--space-4);
+  }
+
+  /* Stack form buttons vertically on mobile */
+  .form-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    max-width: 280px;
+    flex: none;
   }
 }
 
@@ -962,11 +1002,16 @@ footer p {
   gap: var(--space-4);
   justify-content: center;
   margin-top: var(--space-6);
+  flex-wrap: wrap;
 }
 
 .form-actions .btn {
   flex: 1;
   max-width: 200px;
+  min-width: 140px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Auth Links */
