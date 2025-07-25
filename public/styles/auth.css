@@ -305,36 +305,6 @@
   }
 }
 
-/* Password Strength Indicator */
-.password-strength {
-  margin-top: var(--space-2);
-  height: 4px;
-  background-color: var(--gray-200);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.password-strength-bar {
-  height: 100%;
-  transition: all var(--transition-normal);
-  border-radius: var(--radius-full);
-}
-
-.password-strength-weak {
-  width: 33%;
-  background-color: var(--danger-color);
-}
-
-.password-strength-medium {
-  width: 66%;
-  background-color: var(--warning-color);
-}
-
-.password-strength-strong {
-  width: 100%;
-  background-color: var(--success-color);
-}
-
 /* Social Auth Buttons */
 .social-auth {
   margin-top: var(--space-6);
