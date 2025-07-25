@@ -1,63 +1,68 @@
-#!/usr/bin/env node
+const { exec } = require("child_process");
 
-const database = require("../../database");
-
-async function deployProduction() {
+async function deploy() {
   try {
-    console.log("🚀 Starting production deployment...");
-
-    // Test database connection
-    console.log("📡 Testing database connection...");
-    const sequelize = await database.connect();
-    console.log("✅ Database connection established successfully.");
-
     // Run migrations
-    console.log("🔄 Running database migrations...");
-    const { execSync } = require("child_process");
-
-    try {
-      execSync("npx sequelize-cli db:migrate", {
-        stdio: "inherit",
-        env: { ...process.env, NODE_ENV: "production" },
+    console.log("Running migrations...");
+    await new Promise((resolve, reject) => {
+      exec("npx sequelize-cli db:migrate", (error, stdout, stderr) => {
+        if (error) {
+          console.error("Migration error:", error);
+          reject(error);
+        } else {
+          console.log("Migrations completed:", stdout);
+          resolve();
+        }
       });
-      console.log("✅ Migrations completed successfully.");
-    } catch (error) {
-      console.error("❌ Migration failed:", error.message);
-      throw error;
-    }
+    });
 
-    // Optionally seed the database (be careful in production)
-    if (process.argv.includes("--seed")) {
-      console.log("🌱 Seeding database...");
-      try {
-        execSync("npx sequelize-cli db:seed:all", {
-          stdio: "inherit",
-          env: { ...process.env, NODE_ENV: "production" },
+    // Check if database needs seeding
+    console.log("Checking if database needs seeding...");
+    const needsSeeding = await new Promise((resolve) => {
+      // Check if any table has data (example: users table)
+      exec(
+        "mysql -h $MYSQL_HOST -P $MYSQL_PORT -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE -e 'SELECT COUNT(*) as count FROM users;' --skip-column-names",
+        (error, stdout, stderr) => {
+          if (error) {
+            console.log(
+              "Error checking tables or tables don't exist yet, will seed:",
+              error.message
+            );
+            resolve(true); // Seed if we can't check
+          } else {
+            const count = parseInt(stdout.trim());
+            console.log(`Found ${count} records in users table`);
+            resolve(count === 0); // Seed only if empty
+          }
+        }
+      );
+    });
+
+    // Run seeders only if database is empty
+    if (needsSeeding) {
+      console.log("Database appears empty, running seeders...");
+      await new Promise((resolve, reject) => {
+        exec("npx sequelize-cli db:seed:all", (error, stdout, stderr) => {
+          if (error) {
+            console.error("Seeder error:", error);
+            reject(error);
+          } else {
+            console.log("Seeders completed:", stdout);
+            resolve();
+          }
         });
-        console.log("✅ Database seeded successfully.");
-      } catch (error) {
-        console.error("❌ Seeding failed:", error.message);
-        throw error;
-      }
+      });
+    } else {
+      console.log("Database has data, skipping seeders");
     }
 
-    console.log("🎉 Production deployment completed successfully!");
-    console.log("");
-    console.log("Next steps:");
-    console.log("1. Set NODE_ENV=production");
-    console.log("2. Start the application with: npm start");
-    console.log("");
+    // Start the app
+    console.log("Starting application...");
+    require("../../app.js");
   } catch (error) {
-    console.error("💥 Production deployment failed:", error);
+    console.error("Deployment failed:", error);
     process.exit(1);
-  } finally {
-    await database.disconnect();
   }
 }
 
-// Handle command line arguments
-if (require.main === module) {
-  deployProduction();
-}
-
-module.exports = deployProduction;
+deploy();
