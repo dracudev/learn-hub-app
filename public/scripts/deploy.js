@@ -1,6 +1,5 @@
-Users\andre\Desktop\dracudev\IronHack\course-catalog\public\scripts\deploy.js
 const { exec } = require("child_process");
-const { Sequelize } = require('sequelize');
+const { Sequelize } = require("sequelize");
 
 async function deploy() {
   try {
@@ -15,25 +14,25 @@ async function deploy() {
     // Test direct database connection
     console.log("🔌 Testing direct database connection...");
     const sequelize = new Sequelize(process.env.DATABASE_URL, {
-      dialect: 'mysql',
+      dialect: "mysql",
       dialectOptions: {
         ssl: {
           require: true,
           rejectUnauthorized: false,
         },
       },
-      logging: console.log
+      logging: console.log,
     });
 
     try {
       await sequelize.authenticate();
       console.log("✅ Database connection successful!");
-      
+
       // Run migrations programmatically
-      const { Umzug, SequelizeStorage } = require('umzug');
+      const { Umzug, SequelizeStorage } = require("umzug");
       const umzug = new Umzug({
         migrations: {
-          glob: 'database/migrations/*.js',
+          glob: "database/migrations/*.js",
         },
         context: sequelize.getQueryInterface(),
         storage: new SequelizeStorage({ sequelize }),
@@ -43,7 +42,6 @@ async function deploy() {
       console.log("📦 Running migrations programmatically...");
       await umzug.up();
       console.log("✅ Migrations completed!");
-
     } catch (dbError) {
       console.error("❌ Database connection failed:", dbError);
       throw dbError;
@@ -52,7 +50,6 @@ async function deploy() {
     // Start the app
     console.log("🎯 Starting application...");
     require("../../app.js");
-    
   } catch (error) {
     console.error("💥 Deployment failed:", error);
     process.exit(1);
