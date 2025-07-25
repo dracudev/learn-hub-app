@@ -1,5 +1,7 @@
 const { User, Course, Enrollment } = require("../models");
 const { validationResult } = require("express-validator");
+const path = require("path");
+const fs = require("fs");
 
 const userController = {
   showProfile: async (req, res) => {
@@ -152,6 +154,69 @@ const userController = {
         },
         user: req.session.user,
       });
+    }
+  },
+
+  updateProfilePicture: async (req, res) => {
+    try {
+      if (!req.session.user) {
+        return res.status(401).json({ error: "Not authenticated" });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+
+      const userId = req.session.user.id;
+      const user = await User.findByPk(userId);
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Delete old profile picture if it exists and is not the default
+      if (
+        user.profile_picture &&
+        !user.profile_picture.includes("default-avatar.png")
+      ) {
+        const oldImagePath = path.join(
+          __dirname,
+          "../../public",
+          user.profile_picture
+        );
+        if (fs.existsSync(oldImagePath)) {
+          fs.unlinkSync(oldImagePath);
+        }
+      }
+
+      // Update user with new profile picture path
+      const newProfilePicturePath = `/uploads/${req.file.filename}`;
+      await user.update({ profile_picture: newProfilePicturePath });
+
+      // Update session data
+      req.session.user.profile_picture = newProfilePicturePath;
+
+      res.json({
+        success: true,
+        message: "Profile picture updated successfully",
+        profilePicture: newProfilePicturePath,
+      });
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+
+      // Clean up uploaded file if there was an error
+      if (req.file) {
+        const filePath = path.join(
+          __dirname,
+          "../../public/uploads",
+          req.file.filename
+        );
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      }
+
+      res.status(500).json({ error: "Failed to update profile picture" });
     }
   },
 };

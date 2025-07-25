@@ -6,7 +6,7 @@
   <% if (user) { %>
   <div class="profile-container">
     <div class="profile-header">
-      <div class="profile-avatar">
+      <div class="profile-avatar" onclick="openUploadModal()">
         <img
           src="<%= user.profile_picture || '/images/default-avatar.png' %>"
           alt="Profile Picture"
@@ -127,5 +127,148 @@
   </div>
   <% } %>
 </main>
+
+<!-- Profile Picture Upload Modal -->
+<div id="uploadModal" class="upload-modal">
+  <div class="upload-modal-content">
+    <span class="close-modal" onclick="closeUploadModal()">&times;</span>
+    <h3><i class="fas fa-camera"></i> Update Profile Picture</h3>
+
+    <form id="uploadForm" class="upload-form" enctype="multipart/form-data">
+      <div class="file-input-wrapper">
+        <input
+          type="file"
+          id="profilePicture"
+          name="profilePicture"
+          class="file-input"
+          accept="image/*"
+          onchange="previewImage(event)"
+        />
+        <label for="profilePicture" class="file-input-label">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <span>Choose a new profile picture</span>
+        </label>
+      </div>
+
+      <div id="uploadPreview" class="upload-preview">
+        <img id="previewImg" src="" alt="Preview" />
+      </div>
+
+      <div class="upload-actions">
+        <button
+          type="button"
+          class="btn btn-secondary btn-md"
+          onclick="closeUploadModal()"
+        >
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button type="submit" class="btn btn-primary btn-md" id="uploadBtn" disabled>
+          <i class="fas fa-upload"></i> Upload
+        </button>
+      </div>
+
+      <div id="uploadMessage" class="upload-message"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Profile picture upload functionality
+  function openUploadModal() {
+    document.getElementById("uploadModal").style.display = "block";
+  }
+
+  function closeUploadModal() {
+    document.getElementById("uploadModal").style.display = "none";
+    document.getElementById("uploadForm").reset();
+    document.getElementById("uploadPreview").style.display = "none";
+    document.getElementById("uploadBtn").disabled = true;
+    hideUploadMessage();
+  }
+
+  function previewImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("previewImg").src = e.target.result;
+        document.getElementById("uploadPreview").style.display = "block";
+        document.getElementById("uploadBtn").disabled = false;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function showUploadMessage(message, type) {
+    const messageEl = document.getElementById("uploadMessage");
+    messageEl.textContent = message;
+    messageEl.className = `upload-message ${type}`;
+    messageEl.style.display = "block";
+  }
+
+  function hideUploadMessage() {
+    const messageEl = document.getElementById("uploadMessage");
+    messageEl.style.display = "none";
+  }
+
+  // Handle form submission
+  document
+    .getElementById("uploadForm")
+    .addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      const fileInput = document.getElementById("profilePicture");
+
+      if (!fileInput.files[0]) {
+        showUploadMessage("Please select a file", "error");
+        return;
+      }
+
+      formData.append("profilePicture", fileInput.files[0]);
+
+      const uploadBtn = document.getElementById("uploadBtn");
+      uploadBtn.disabled = true;
+      uploadBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+      try {
+        const response = await fetch("/user/profile/picture", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showUploadMessage(result.message, "success");
+
+          // Update the profile picture in the page
+          document.querySelector(".avatar-img").src = result.profilePicture;
+
+          // Close modal after a short delay
+          setTimeout(() => {
+            closeUploadModal();
+          }, 1500);
+        } else {
+          showUploadMessage(result.error || "Upload failed", "error");
+        }
+      } catch (error) {
+        console.error("Upload error:", error);
+        showUploadMessage("Upload failed. Please try again.", "error");
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = '<i class="fas fa-upload"></i> Upload';
+      }
+    });
+
+  // Close modal when clicking outside
+  window.onclick = function (event) {
+    const modal = document.getElementById("uploadModal");
+    if (event.target === modal) {
+      closeUploadModal();
+    }
+  };
+</script>
 
 <%- include('partials/footer') %>
