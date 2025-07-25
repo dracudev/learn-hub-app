@@ -3,7 +3,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Get user and course IDs from the database
     const users = await queryInterface.sequelize.query(
       "SELECT id, name FROM users ORDER BY id;",
       { type: Sequelize.QueryTypes.SELECT }
@@ -19,23 +18,23 @@ module.exports = {
         "enrollments",
         [
           {
-            user_id: users[1].id, // Second user (John Smith)
-            course_id: courses[0].id, // First course (JavaScript Course)
+            user_id: users[1].id,
+            course_id: courses[0].id,
             created_at: new Date(),
           },
           {
-            user_id: users[1].id, // Second user (John Smith)
-            course_id: courses[2] ? courses[2].id : courses[0].id, // Third course or first if not available
+            user_id: users[1].id,
+            course_id: courses[2] ? courses[2].id : courses[0].id,
             created_at: new Date(),
           },
           {
-            user_id: users[2] ? users[2].id : users[1].id, // Third user or second if not available
-            course_id: courses[0].id, // First course (JavaScript Course)
+            user_id: users[2] ? users[2].id : users[1].id,
+            course_id: courses[0].id,
             created_at: new Date(),
           },
           {
-            user_id: users[2] ? users[2].id : users[1].id, // Third user or second if not available
-            course_id: courses[3] ? courses[3].id : courses[1].id, // Fourth course or second if not available
+            user_id: users[2] ? users[2].id : users[1].id,
+            course_id: courses[3] ? courses[3].id : courses[1].id,
             created_at: new Date(),
           },
         ],
