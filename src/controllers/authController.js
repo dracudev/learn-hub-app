@@ -58,8 +58,8 @@ const authController = {
       res.redirect("/login");
     } catch (err) {
       console.error("Error creating user:", err);
-      res.render("LearnHub | signup", {
-        title: "Sign Up",
+      res.render("signup", {
+        title: "LearnHub | Sign Up",
         message: "Error creating user.",
         user: req.session.user,
       });
@@ -68,7 +68,7 @@ const authController = {
 
   getLogin: (req, res) => {
     res.render("login", {
-      title: "Login",
+      title: "LearnHub | Login",
       message: "",
       user: req.session.user,
     });

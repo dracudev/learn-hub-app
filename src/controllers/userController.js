@@ -46,7 +46,7 @@ const userController = {
       });
 
       res.render("profile", {
-        title: "My Profile",
+        title: "LearnHub | My Profile",
         user: user.toJSON(),
         enrolledCourses: formattedCourses,
       });
