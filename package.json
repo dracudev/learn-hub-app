@@ -1,11 +1,11 @@
 {
-  "name": "clases",
+  "name": "learn-hub",
   "version": "1.0.0",
-  "description": "Proyecto de clase",
-  "author": "Moi",
+  "description": "Online learning platform for developers",
+  "author": "dracudev",
   "license": "ISC",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
