@@ -43,8 +43,8 @@ A Node.js application for managing courses with user authentication and enrollme
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/dracudev/learn-hub-app
-   cd learn-hub-app
+   git clone https://github.com/dracudev/learnhub-app
+   cd learnhub-app
    ```
 
 2. **Install dependencies**
