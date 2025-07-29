@@ -3,12 +3,12 @@ const { verifyJwt } = require("../utils/jwt");
 const jwtAuth = (req, res, next) => {
   const token = req.session && req.session.jwt;
   if (!token) {
-    return res.redirect("/login");
+    return res.redirect("/auth/login");
   }
   const user = verifyJwt(token);
   if (!user) {
     req.session.destroy(() => {
-      res.redirect("/login");
+      res.redirect("/auth/login");
     });
     return;
   }
@@ -22,6 +22,7 @@ const jwtAuth = (req, res, next) => {
   });
   req.session.jwt = newToken;
   req.user = user;
+  next();
 };
 
 const requireAdmin = (req, res, next) => {
