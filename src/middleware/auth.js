@@ -19,7 +19,7 @@ const jwtAuth = (req, res, next) => {
   });
   req.session.jwt = newToken;
   req.user = user;
-  ne
+};
 
 const requireAdmin = (req, res, next) => {
   if (!req.session.user || req.session.user.role !== "admin") {
