@@ -1,51 +1,51 @@
 :root {
   /* Color Palette */
-  --primary-color: #1e293b;
-  --primary-light: #334155;
-  --primary-dark: #0f172a;
-  --secondary-color: #475569;
-  --accent-color: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-light: #dbeafe;
-  --success-color: #10b981;
-  --success-hover: #059669;
-  --success-light: #d1fae5;
-  --danger-color: #ef4444;
-  --danger-hover: #dc2626;
-  --danger-light: #fecaca;
-  --warning-color: #f59e0b;
-  --warning-hover: #d97706;
-  --warning-light: #fef3c7;
-  --info-color: #8b5cf6;
-  --info-hover: #7c3aed;
-  --info-light: #ede9fe;
+  --primary-color: #2d1b4e;
+  --primary-light: #3e2a5f;
+  --primary-dark: #1f1135;
+  --secondary-color: #656d76;
+  --accent-color: #24292f;
+  --accent-hover: #1c2128;
+  --accent-light: #f6f8fa;
+  --success-color: #6e7781;
+  --success-hover: #57606a;
+  --success-light: #f6f8fa;
+  --danger-color: #cf222e;
+  --danger-hover: #a40e26;
+  --danger-light: #ffebe9;
+  --warning-color: #bf8700;
+  --warning-hover: #9a6700;
+  --warning-light: #fff8c5;
+  --info-color: #57606a;
+  --info-hover: #424a53;
+  --info-light: #f6f8fa;
 
   /* Neutral Colors */
-  --gray-50: #f8fafc;
-  --gray-100: #f1f5f9;
-  --gray-200: #e2e8f0;
-  --gray-300: #cbd5e1;
-  --gray-400: #94a3b8;
-  --gray-500: #64748b;
-  --gray-600: #475569;
-  --gray-700: #334155;
-  --gray-800: #1e293b;
-  --gray-900: #0f172a;
+  --gray-50: #f6f8fa;
+  --gray-100: #eaeef2;
+  --gray-200: #d0d7de;
+  --gray-300: #afb8c1;
+  --gray-400: #8c959f;
+  --gray-500: #6e7781;
+  --gray-600: #57606a;
+  --gray-700: #424a53;
+  --gray-800: #32383f;
+  --gray-900: #24292f;
 
   /* Text Colors */
   --text-primary: var(--gray-900);
   --text-secondary: var(--gray-700);
-  --text-muted: var(--gray-500);
-  --text-light: var(--gray-400);
+  --text-muted: var(--gray-600);
+  --text-light: var(--gray-500);
   --text-white: #ffffff;
-  --text-on-dark: #f8fafc;
+  --text-on-dark: #f0f6fc;
 
   /* Background Colors */
   --bg-primary: var(--gray-50);
   --bg-secondary: var(--gray-100);
   --bg-white: #ffffff;
   --bg-card: #ffffff;
-  --bg-overlay: rgba(15, 23, 42, 0.75);
+  --bg-overlay: rgba(36, 41, 47, 0.8);
   --bg-form: #ffffff;
   --bg-input: #ffffff;
 
@@ -508,6 +508,15 @@ footer p {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .navbar {
+    padding: 0 var(--space-2);
+  }
+
   nav ul {
     flex-wrap: wrap;
     gap: var(--space-3);
@@ -520,11 +529,15 @@ footer p {
   }
 
   main {
-    margin: var(--space-4) auto;
-    padding: var(--space-4);
-    width: calc(100% - var(--space-4));
-    border-radius: var(--radius-xl);
+    margin: 0;
+    padding: var(--space-4) var(--space-2);
+    width: 100%;
+    border-radius: 0;
     max-width: none;
+    min-height: calc(100vh - var(--space-16));
+    box-shadow: none;
+    left: 0;
+    right: 0;
   }
 
   main h1 {
@@ -563,16 +576,29 @@ footer p {
 }
 
 @media (max-width: 480px) {
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .navbar {
+    padding: 0 var(--space-2);
+  }
+
   nav ul {
     flex-direction: column;
     gap: var(--space-2);
   }
 
   main {
-    margin: var(--space-2) auto;
-    padding: var(--space-2);
-    width: calc(100% - var(--space-2));
-    max-width: none;
+    margin: 0 !important;
+    padding: var(--space-3) var(--space-2);
+    width: 100% !important;
+    max-width: none !important;
+    min-height: calc(100vh - var(--space-12));
+    box-shadow: none;
+    left: 0;
+    right: 0;
   }
 
   main h1 {
@@ -759,13 +785,13 @@ footer p {
 
 /* Button Variants */
 .btn-primary {
-  background-color: var(--accent-color);
+  background-color: var(--primary-color);
   color: var(--text-white);
   box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-hover);
+  background-color: var(--primary-light);
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
   text-decoration: none;
@@ -951,7 +977,7 @@ footer p {
 
 .form-control:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(36, 41, 47, 0.1);
   outline: none;
 }
 

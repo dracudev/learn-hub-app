@@ -1,4 +1,3 @@
-/* Hero Section */
 .hero-section {
   background: linear-gradient(
     135deg,
@@ -68,6 +67,15 @@
   gap: var(--space-4);
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.hero-actions .btn {
+  color: var(--text-white);
+  border-color: var(--text-white);
+
+  &:hover {
+    background-color: var(--primary-light);
+  }
 }
 
 /* Features Section */
