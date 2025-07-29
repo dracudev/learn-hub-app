@@ -16,7 +16,7 @@ const authController = {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.render("signup", {
-        title: "LearnHub | Sign Up",
+        title: "Sign Up",
         message: errors
           .array()
           .map((e) => e.msg)
@@ -28,14 +28,14 @@ const authController = {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
       return res.render("signup", {
-        title: "LearnHub | Sign Up",
+        title: "Sign Up",
         message: "Please fill in all fields.",
         user: req.session.user,
       });
     }
 
     try {
-      const existingUser = await User.findOne({
+      const existingUser = await models.User.findFirst({
         where: { email },
       });
 
@@ -49,14 +49,25 @@ const authController = {
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      await User.create({
-        name,
-        email,
-        password: hashedPassword,
-        role: "registered",
+      const newUser = await models.User.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+          role: "registered",
+        },
       });
 
-      res.redirect("/login");
+      const userPayload = {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      };
+      req.session.user = userPayload;
+      const token = signJwt(userPayload);
+      req.session.jwt = token;
+      res.redirect("/");
     } catch (err) {
       console.error("Error creating user:", err);
       res.render("signup", {
