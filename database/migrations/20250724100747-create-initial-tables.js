@@ -3,7 +3,6 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Create users table
     await queryInterface.createTable("users", {
       id: {
         type: Sequelize.INTEGER,
@@ -37,7 +36,6 @@ module.exports = {
       },
     });
 
-    // Create courses table
     await queryInterface.createTable("courses", {
       id: {
         type: Sequelize.INTEGER,
@@ -66,7 +64,6 @@ module.exports = {
       },
     });
 
-    // Create enrollments table
     await queryInterface.createTable("enrollments", {
       id: {
         type: Sequelize.INTEGER,
@@ -97,7 +94,6 @@ module.exports = {
       },
     });
 
-    // Add unique constraint for user_id and course_id combination
     await queryInterface.addIndex("enrollments", {
       fields: ["user_id", "course_id"],
       unique: true,

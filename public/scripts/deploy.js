@@ -9,7 +9,6 @@ async function deploy() {
     console.log("🔍 Environment check:");
     console.log("MYSQL_URL:", process.env.MYSQL_URL ? "SET" : "NOT_SET");
 
-    // Test database connection
     const sequelize = new Sequelize(process.env.MYSQL_URL, {
       dialect: "mysql",
       dialectOptions: {
@@ -21,7 +20,6 @@ async function deploy() {
     await sequelize.authenticate();
     console.log("✅ Database connection successful!");
 
-    // Run migrations
     console.log("📦 Running migrations...");
     await new Promise((resolve, reject) => {
       exec(
@@ -38,7 +36,6 @@ async function deploy() {
       );
     });
 
-    // Check if database needs seeding
     console.log("🔍 Checking if database needs seeding...");
     try {
       const [results] = await sequelize.query(
@@ -55,7 +52,7 @@ async function deploy() {
             (error, stdout, stderr) => {
               if (error) {
                 console.error("⚠️ Seeder error (non-critical):", error.message);
-                resolve(); // Don't fail deployment for seeder issues
+                resolve();
               } else {
                 console.log("✅ Sample data created successfully!");
                 console.log("👤 Demo users:");
@@ -73,7 +70,6 @@ async function deploy() {
       console.log("⚠️ Could not check for existing data, skipping seeders");
     }
 
-    // Start the app
     console.log("🎯 Starting application...");
     require("../../app.js");
   } catch (error) {

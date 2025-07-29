@@ -2,7 +2,6 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
-// Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, "../../public/uploads");
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -27,7 +26,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Configure multer
 const upload = multer({
   storage: storage,
   limits: {

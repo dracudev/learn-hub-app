@@ -7,7 +7,6 @@ class DatabaseAdapter {
   }
 
   async connect() {
-    // Load the specific ORM implementation
     const sequelize = require("./config/sequelize");
     this.orm = sequelize;
 
@@ -24,10 +23,8 @@ class DatabaseAdapter {
   }
 
   getModels() {
-    // Return models from the factory through sequelize config
     const sequelize = require("./config/sequelize");
 
-    // Models are attached to sequelize instance by the factory
     return {
       User: sequelize.models.User,
       Course: sequelize.models.Course,

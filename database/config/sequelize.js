@@ -6,7 +6,6 @@ require("dotenv").config();
 let sequelize;
 
 if (process.env.NODE_ENV === "production") {
-  // Production: Use Railway's MYSQL_URL
   sequelize = new Sequelize(process.env.MYSQL_URL, {
     dialect: "mysql",
     dialectOptions: {
@@ -28,7 +27,6 @@ if (process.env.NODE_ENV === "production") {
     },
   });
 } else {
-  // Development: Use local environment variables
   sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
@@ -46,15 +44,12 @@ if (process.env.NODE_ENV === "production") {
   );
 }
 
-// Initialize Model Factory with schemas
 const modelFactory = new SequelizeModelFactory(sequelize);
 
-// Create models from schemas
 const User = modelFactory.createModel("User", schemas.User);
 const Course = modelFactory.createModel("Course", schemas.Course);
 const Enrollment = modelFactory.createModel("Enrollment", schemas.Enrollment);
 
-// Setup associations
 modelFactory.setupAssociations(schemas.getAll());
 
 module.exports = sequelize;

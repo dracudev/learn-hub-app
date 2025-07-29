@@ -39,7 +39,6 @@ const userController = {
         order: [["enrollments", "created_at", "DESC"]],
       });
 
-      // Format the data for the view
       const formattedCourses = enrolledCourses.map((course) => {
         const courseData = course.toJSON();
         courseData.enrollment_date = courseData.enrollments[0].created_at;
@@ -170,7 +169,6 @@ const userController = {
         return res.status(404).json({ error: "User not found" });
       }
 
-      // Delete old profile picture if it exists
       if (
         user.profile_picture &&
         !user.profile_picture.includes("default-avatar.png")
@@ -188,7 +186,6 @@ const userController = {
       const newProfilePicturePath = `/uploads/${req.file.filename}`;
       await user.update({ profile_picture: newProfilePicturePath });
 
-      // Update session data
       req.session.user.profile_picture = newProfilePicturePath;
 
       res.json({
@@ -199,7 +196,6 @@ const userController = {
     } catch (error) {
       console.error("Error updating profile picture:", error);
 
-      // Clean up uploaded file if there was an error
       if (req.file) {
         const filePath = path.join(
           __dirname,

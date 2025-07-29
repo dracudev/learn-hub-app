@@ -4,7 +4,6 @@ const courseController = require("../controllers/courseController");
 const { requireAdmin } = require("../middleware/auth");
 const { courseValidation } = require("../validations/courseValidation");
 
-// Course CRUD routes (admin only)
 router.get("/create", requireAdmin, courseController.getCreate);
 
 router.post(
@@ -25,7 +24,6 @@ router.post(
 
 router.post("/:id/delete", requireAdmin, courseController.delete);
 
-// Public routes for viewing courses
 router.get("/", courseController.getAll);
 router.get("/:id", courseController.getDetails);
 

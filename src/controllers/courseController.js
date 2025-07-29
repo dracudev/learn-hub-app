@@ -128,7 +128,6 @@ const courseController = {
         attributes: ["id", "title", "description", "category", "visibility"],
       });
 
-      // If user is logged in, check enrollment status for each course
       let coursesWithEnrollment = courses.map((course) => course.toJSON());
       if (req.session.user) {
         const userId = req.session.user.id;

@@ -7,14 +7,12 @@ class SequelizeModelFactory {
     this.models = {};
   }
 
-  // Convert abstract schema to Sequelize model
   createModel(name, schema) {
     const attributes = this.convertFieldsToSequelize(schema.fields);
     const options = this.convertOptionsToSequelize(schema);
 
     const model = this.sequelize.define(name, attributes, options);
 
-    // Add hooks if defined in schema
     if (schema.hooks) {
       this.addHooks(model, schema.hooks);
     }
@@ -36,7 +34,6 @@ class SequelizeModelFactory {
   convertFieldType(fieldConfig) {
     const sequelizeField = {};
 
-    // Type conversion
     switch (fieldConfig.type) {
       case "INTEGER":
         sequelizeField.type = DataTypes.INTEGER;
@@ -57,7 +54,6 @@ class SequelizeModelFactory {
         sequelizeField.type = DataTypes.STRING;
     }
 
-    // Constraints
     if (fieldConfig.primaryKey) sequelizeField.primaryKey = true;
     if (fieldConfig.autoIncrement) sequelizeField.autoIncrement = true;
     if (fieldConfig.required) sequelizeField.allowNull = false;
@@ -70,12 +66,10 @@ class SequelizeModelFactory {
       }
     }
 
-    // Validation
     if (fieldConfig.validate) {
       sequelizeField.validate = fieldConfig.validate;
     }
 
-    // References
     if (fieldConfig.references) {
       sequelizeField.references = {
         model: fieldConfig.references.model,
@@ -93,7 +87,6 @@ class SequelizeModelFactory {
       tableName: schema.tableName,
     };
 
-    // Timestamps
     if (schema.timestamps === false) {
       options.timestamps = false;
     } else if (schema.timestamps) {
@@ -106,7 +99,6 @@ class SequelizeModelFactory {
       }
     }
 
-    // Indexes
     if (schema.indexes) {
       options.indexes = schema.indexes;
     }
@@ -132,7 +124,6 @@ class SequelizeModelFactory {
     }
   }
 
-  // Set up associations after all models are created
   setupAssociations(schemas) {
     for (const [modelName, schema] of Object.entries(schemas)) {
       if (schema.relationships) {
