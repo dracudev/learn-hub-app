@@ -1,7 +1,15 @@
-const requireAuth = (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect("/auth/login");
+const { verifyJwt } = require("../utils/jwt");
+
+const jwtAuth = (req, res, next) => {
+  const token = req.session && req.session.jwt;
+  if (!token) {
+    return res.redirect("/login");
   }
+  const user = verifyJwt(token);
+  if (!user) {
+    return res.redirect("/login");
+  }
+  req.user = user;
   next();
 };
 
@@ -37,8 +45,8 @@ const redirectIfAuthenticated = (req, res, next) => {
 };
 
 module.exports = {
-  requireAuth,
   requireAdmin,
   requireRole,
   redirectIfAuthenticated,
+  jwtAuth,
 };

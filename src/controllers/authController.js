@@ -1,6 +1,7 @@
 const { User } = require("../models");
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
+const { signJwt } = require("../utils/jwt");
 
 const authController = {
   getSignup: (req, res) => {
@@ -126,6 +127,14 @@ const authController = {
         role: user.role,
         profile_picture: user.profile_picture,
       };
+
+      const token = signJwt({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      });
+      req.session.jwt = token;
       res.redirect("/");
     } catch (err) {
       console.error("Error during login:", err);

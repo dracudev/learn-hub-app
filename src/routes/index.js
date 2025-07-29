@@ -4,7 +4,7 @@ const authRoutes = require("./authRoutes");
 const adminRoutes = require("./adminRoutes");
 const courseRoutes = require("./courseRoutes");
 const userRoutes = require("./userRoutes");
-const { requireAdmin, requireAuth } = require("../middleware/auth");
+const { requireAdmin, jwtAuth } = require("../middleware/auth");
 
 router.get("/", function (req, res) {
   let message;
@@ -21,8 +21,8 @@ router.get("/", function (req, res) {
 });
 
 router.use("/auth", authRoutes);
-router.use("/admin", requireAdmin, adminRoutes);
+router.use("/admin", jwtAuth, requireAdmin, adminRoutes);
 router.use("/courses", courseRoutes);
-router.use("/user", requireAuth, userRoutes);
+router.use("/user", jwtAuth, userRoutes);
 
 module.exports = router;
