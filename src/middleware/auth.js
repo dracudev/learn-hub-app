@@ -9,9 +9,17 @@ const jwtAuth = (req, res, next) => {
   if (!user) {
     return res.redirect("/login");
   }
+
+  // Refresh JWT while session is valid
+  const newToken = signJwt({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  });
+  req.session.jwt = newToken;
   req.user = user;
-  next();
-};
+  ne
 
 const requireAdmin = (req, res, next) => {
   if (!req.session.user || req.session.user.role !== "admin") {
