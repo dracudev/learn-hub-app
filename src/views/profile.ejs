@@ -178,7 +178,6 @@
 </div>
 
 <script>
-  // Profile picture upload functionality
   function openUploadModal() {
     document.getElementById("uploadModal").style.display = "block";
   }
@@ -216,7 +215,6 @@
     messageEl.style.display = "none";
   }
 
-  // Handle form submission
   document
     .getElementById("uploadForm")
     .addEventListener("submit", async function (e) {
@@ -248,7 +246,6 @@
         if (result.success) {
           showUploadMessage(result.message, "success");
 
-          // Update the profile picture in the page
           document.querySelector(".avatar-img").src = result.profilePicture;
 
           setTimeout(() => {
@@ -266,7 +263,6 @@
       }
     });
 
-  // Close modal when clicking outside
   window.onclick = function (event) {
     const modal = document.getElementById("uploadModal");
     if (event.target === modal) {
