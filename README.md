@@ -20,14 +20,13 @@ A Node.js application for managing courses with user authentication and enrollme
 
 ## Features
 
-- 🔐 User authentication (sign up, login, logout)
+- 🔑 JWT-based authentication for APIs
 - 👥 Role-based access (public, registered, admin)
 - 📚 Course management (CRUD operations)
 - 📝 Course enrollment system
 - 🛠️ Admin dashboard
 - 👤 User profiles with profile picture upload
 - 🗄️ Database abstraction layer (easy ORM switching)
-- 🔑 JWT-based authentication for APIs
 - 🛡️ Security middleware: helmet, express-rate-limit
 
 ## Technologies Used
