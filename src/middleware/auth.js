@@ -7,7 +7,10 @@ const jwtAuth = (req, res, next) => {
   }
   const user = verifyJwt(token);
   if (!user) {
-    return res.redirect("/login");
+    req.session.destroy(() => {
+      res.redirect("/login");
+    });
+    return;
   }
 
   // Refresh JWT while session is valid
