@@ -11,7 +11,6 @@
 - [Scripts](#scripts)
 - [File Structure](#file-structure)
 - [Database Schema](#database-schema)
-- [Database Architecture](#database-architecture)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -26,15 +25,18 @@ A Node.js application for managing courses with user authentication and enrollme
 - 📚 Course management (CRUD operations)
 - 📝 Course enrollment system
 - 🛠️ Admin dashboard
-- 👤 User profiles
+- 👤 User profiles with profile picture upload
 - 🗄️ Database abstraction layer (easy ORM switching)
+- 🔑 JWT-based authentication for APIs
+- 🛡️ Security middleware: helmet, express-rate-limit
 
 ## Technologies Used
 
 - **Backend**: Node.js, Express.js
 - **Database**: MySQL with Sequelize ORM (abstracted)
 - **Architecture**: Database abstraction layer
-- **Authentication**: bcrypt, express-session
+- **Authentication**: bcrypt, express-session, jsonwebtoken (JWT)
+- **Security**: helmet, express-rate-limit
 - **View Engine**: EJS
 - **Validation**: express-validator
 
@@ -138,92 +140,70 @@ After seeding, you can log in with:
 ## File Structure
 
 ```tree
-├── app.js                 # Main application file
+├── app.js
 ├── package.json
 ├── .env
-├── .sequelizerc          # Sequelize configuration
-├── database/             # Database Abstraction Layer
-│   ├── index.js             # Database adapter (connection manager)
+├── LICENSE.md
+├── README.md
+├── database/
+│   ├── index.js
 │   ├── config/
-│   │   ├── database.js      # Environment configurations
-│   │   └── sequelize.js     # Sequelize instance + model creation
 │   ├── factories/
-│   │   └── SequelizeModelFactory.js  # Schema → Sequelize converter
-│   └── schemas/             # ORM-agnostic schema definitions
-│       ├── index.js
-│       ├── userSchema.js
-│       ├── courseSchema.js
-│       └── enrollmentSchema.js
-├── migrations/
-├── seeders/
-├── public/              # Static assets
+│   ├── migrations/
+│   ├── schemas/
+│   └── seeders/
+├── public/
+│   ├── favicon.ico
 │   ├── images/
 │   ├── scripts/
-│   └── styles/
+│   ├── styles/
+│   └── uploads/
 ├── src/
 │   ├── controllers/
-│   │   ├── authController.js
-│   │   ├── courseController.js
-│   │   └── userController.js
 │   ├── middleware/
-│   │   └── auth.js
-│   ├── models/          # (Abstracted)
-│   │   ├── index.js
-│   │   ├── User.js
-│   │   ├── Course.js
-│   │   └── Enrollment.js
+│   ├── models/
 │   ├── routes/
-│   │   ├── index.js
-│   │   ├── adminRoutes.js
-│   │   ├── authRoutes.js
-│   │   ├── courseRoutes.js
-│   │   └── userRoutes.js
-│   └── validations/
-│       ├── authValidation.js
-│       └── courseValidation.js
-└── views/               # EJS templates
-    ├── partials/
-    └── ...
+│   ├── utils/
+│   ├── validations/
+│   └── views/
+│       └── partials/
+└── ...
 ```
 
 ## Database Schema
 
 ### Users Table
 
-- `id` (Primary Key)
-- `name`
-- `email` (Unique)
-- `password` (Hashed)
-- `role` (public, registered, admin)
-- `profile_picture`
-- `created_at`
+| Column           | Type         | Details                        |
+|------------------|--------------|--------------------------------|
+| id               | INTEGER      | Primary Key                    |
+| name             | STRING       |                                |
+| email            | STRING       | Unique                         |
+| password         | STRING       | Hashed                         |
+| role             | STRING       | public, registered, admin      |
+| profile_picture  | STRING       |                                |
+| created_at       | DATETIME     |                                |
 
 ### Courses Table
 
-- `id` (Primary Key)
-- `title`
-- `description`
-- `category`
-- `visibility` (public, private)
-- `created_at`
+| Column       | Type     | Details                |
+|--------------|----------|------------------------|
+| id           | INTEGER  | Primary Key            |
+| title        | STRING   |                        |
+| description  | TEXT     |                        |
+| category     | STRING   |                        |
+| visibility   | STRING   | public, private        |
+| created_at   | DATETIME |                        |
 
 ### Enrollments Table
 
-- `id` (Primary Key)
-- `user_id` (Foreign Key)
-- `course_id` (Foreign Key)
-- `enrollment_date`
-- Unique constraint on (user_id, course_id)
-
-## Database Architecture
-
-### **Abstraction Layers:**
-
-1. **📊 Schemas** (`/database/schemas/`): ORM-agnostic data definitions
-2. **🏭 Model Factory** (`/database/factories/`): Converts schemas to ORM models  
-3. **⚙️ Config Layer** (`/database/config/`): Environment and connection management
-4. **🔌 Database Adapter** (`/database/index.js`): Connection abstraction
-5. **📦 Models** (`/src/models/`): Clean model exports
+| Column          | Type     | Details                          |
+|-----------------|----------|----------------------------------|
+| id              | INTEGER  | Primary Key                      |
+| user_id         | INTEGER  | Foreign Key (Users)              |
+| course_id       | INTEGER  | Foreign Key (Courses)            |
+| enrollment_date | DATETIME |                                  |
+| (user_id, course_id) | UNIQUE   | Composite unique constraint |
 
 ## Contributing
 
