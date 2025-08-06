@@ -28,16 +28,18 @@ A Node.js application for managing courses with user authentication and enrollme
 - 👤 User profiles with profile picture upload
 - 🗄️ Database abstraction layer (easy ORM switching)
 - 🛡️ Security middleware: helmet, express-rate-limit
+- 🔄 Multi-environment support (MySQL for dev, PostgreSQL for prod)
 
 ## Technologies Used
 
 - **Backend**: Node.js, Express.js
-- **Database**: MySQL with Sequelize ORM (abstracted)
+- **Database**: MySQL (development), PostgreSQL (production) with Sequelize ORM
 - **Architecture**: Database abstraction layer
 - **Authentication**: bcrypt, express-session, jsonwebtoken (JWT)
 - **Security**: helmet, express-rate-limit
 - **View Engine**: EJS
 - **Validation**: express-validator
+- **Deployment**: Vercel (serverless)
 
 ## Setup Instructions
 
@@ -58,7 +60,8 @@ A Node.js application for managing courses with user authentication and enrollme
    Create a `.env` file in the root directory:
 
    ```env
-   PORT=4000
+   # Development (MySQL)
+   PORT=3000
    DB_HOST=localhost
    DB_USER=root
    DB_PASS=your_mysql_password
@@ -66,16 +69,19 @@ A Node.js application for managing courses with user authentication and enrollme
    DB_PORT=3306
    SESSION_SECRET=your_secret_key_here
    NODE_ENV=development
+   
+   # Production (PostgreSQL)
+   POSTGRES_URL=your_postgresql_connection_string
    ```
 
 4. **Set up the database**
 
    ```bash
    # Run migrations to create tables
-   npm run db:migrate
+   npm run migrate
    
    # Seed the database with initial data
-   npm run db:seed
+   npm run seed
    ```
 
 5. **Start the development server**
@@ -112,12 +118,12 @@ After seeding, you can log in with:
 
 - `GET /courses` - List all courses
 - `GET /courses/:id` - Course details
-- `GET /administration` - Admin dashboard (admin only)
+- `GET /admin/dashboard` - Admin dashboard (admin only)
 - `GET /courses/create` - Create course form (admin only)
-- `POST /courses` - Create new course (admin only)
+- `POST /courses/create` - Create new course (admin only)
 - `GET /courses/:id/edit` - Edit course form (admin only)
-- `PUT /courses/:id` - Update course (admin only)
-- `DELETE /courses/:id` - Delete course (admin only)
+- `POST /courses/:id/edit` - Update course (admin only)
+- `POST /courses/:id/delete` - Delete course (admin only)
 
 ### User Profile
 
@@ -127,37 +133,43 @@ After seeding, you can log in with:
 
 ## Scripts
 
-- `npm start` - Start production server
+- `npm start` - Start production server (with deployment script)
 - `npm run dev` - Start development server with nodemon
-- `npm run db:migrate` - Run database migrations
-- `npm run db:migrate:undo` - Undo last migration
-- `npm run db:seed` - Run all seeders
-- `npm run db:seed:undo` - Undo all seeders
-- `npm run db:reset` - Reset database (undo migrations, migrate, seed)
-- `npm run production:setup` - Set up production database
+- `npm run migrate` - Run database migrations
+- `npm run seed` - Run all seeders
+- `npm run neon:setup` - Set up production database (PostgreSQL)
+- `npm run build` - Install dependencies
 
 ## File Structure
 
 ```tree
-├── app.js
-├── package.json
-├── .env
+├── app.js                    # Main application entry point
+├── package.json             # Project dependencies and scripts
+├── .env                     # Environment variables (not in repo)
 ├── LICENSE.md
 ├── README.md
-├── database/
+├── vercel.json              # Vercel deployment configuration
+├── api/                     # Serverless function entry point
+│   └── index.js
+├── database/                # Database layer and configuration
 │   ├── index.js
 │   ├── config/
+│   │   ├── database.js
+│   │   ├── sequelize.js
+│   │   └── sequelize.json
 │   ├── factories/
 │   ├── migrations/
 │   ├── schemas/
 │   └── seeders/
-├── public/
+├── public/                  # Static assets
 │   ├── favicon.ico
 │   ├── images/
 │   ├── scripts/
+│   │   └── deploy.js        # Production deployment script
 │   ├── styles/
-│   └── uploads/
-├── src/
+│   └── uploads/             # User uploaded files
+├── src/                     # Application source code
+│   ├── server.js            # Express server configuration
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
