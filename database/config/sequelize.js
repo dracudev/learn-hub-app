@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === "production") {
       },
     },
     pool: {
-      max: 5,
+      max: 2,
       min: 0,
       acquire: 30000,
       idle: 10000,
@@ -26,6 +26,7 @@ if (process.env.NODE_ENV === "production") {
       timestamps: true,
       underscored: false,
     },
+    dialectModule: require("pg"),
   });
 } else {
   sequelize = new Sequelize(
