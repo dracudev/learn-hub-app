@@ -12,7 +12,8 @@
     "dev": "nodemon app.js",
     "migrate": "npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
-    "neon:setup": "npx sequelize-cli db:migrate --env production && npx sequelize-cli db:seed:all --env production"
+    "neon:setup": "npx sequelize-cli db:migrate --env production && npx sequelize-cli db:seed:all --env production",
+    "vercel-build": "npm install"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
