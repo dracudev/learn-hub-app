@@ -14,32 +14,42 @@ module.exports = {
     );
 
     if (users.length >= 2 && courses.length >= 2) {
-      await queryInterface.bulkInsert(
-        "enrollments",
-        [
-          {
-            user_id: users[1].id,
-            course_id: courses[0].id,
-            created_at: new Date(),
-          },
-          {
-            user_id: users[1].id,
-            course_id: courses[2] ? courses[2].id : courses[0].id,
-            created_at: new Date(),
-          },
-          {
-            user_id: users[2] ? users[2].id : users[1].id,
-            course_id: courses[0].id,
-            created_at: new Date(),
-          },
-          {
-            user_id: users[2] ? users[2].id : users[1].id,
-            course_id: courses[3] ? courses[3].id : courses[1].id,
-            created_at: new Date(),
-          },
-        ],
-        {}
+      const enrollmentsToInsert = [
+        { user_id: users[1].id, course_id: courses[0].id },
+        {
+          user_id: users[1].id,
+          course_id: courses[2] ? courses[2].id : courses[0].id,
+        },
+        {
+          user_id: users[2] ? users[2].id : users[1].id,
+          course_id: courses[0].id,
+        },
+        {
+          user_id: users[2] ? users[2].id : users[1].id,
+          course_id: courses[3] ? courses[3].id : courses[1].id,
+        },
+      ];
+      const existing = await queryInterface.sequelize.query(
+        `SELECT user_id, course_id FROM enrollments WHERE (user_id, course_id) IN (${enrollmentsToInsert
+          .map(() => "(?, ?)")
+          .join(",")})`,
+        {
+          replacements: enrollmentsToInsert.flatMap((e) => [
+            e.user_id,
+            e.course_id,
+          ]),
+          type: Sequelize.QueryTypes.SELECT,
+        }
       );
+      const existingPairs = new Set(
+        existing.map((e) => `${e.user_id}_${e.course_id}`)
+      );
+      const toInsert = enrollmentsToInsert
+        .filter((e) => !existingPairs.has(`${e.user_id}_${e.course_id}`))
+        .map((e) => ({ ...e, created_at: new Date() }));
+      if (toInsert.length > 0) {
+        await queryInterface.bulkInsert("enrollments", toInsert, {});
+      }
     }
   },
 

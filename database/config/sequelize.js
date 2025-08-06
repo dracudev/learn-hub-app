@@ -6,8 +6,9 @@ require("dotenv").config();
 let sequelize;
 
 if (process.env.NODE_ENV === "production") {
-  sequelize = new Sequelize(process.env.MYSQL_URL, {
-    dialect: "mysql",
+  sequelize = new Sequelize(process.env.POSTGRES_URL, {
+    dialect: "postgres",
+    protocol: "postgres",
     dialectOptions: {
       ssl: {
         require: true,

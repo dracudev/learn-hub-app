@@ -4,13 +4,15 @@ const { Sequelize } = require("sequelize");
 async function deploy() {
   try {
     console.log("🚀 Starting deployment...");
+
     process.env.NODE_ENV = "production";
 
     console.log("🔍 Environment check:");
-    console.log("MYSQL_URL:", process.env.MYSQL_URL ? "SET" : "NOT_SET");
+    console.log("POSTGRES_URL:", process.env.POSTGRES_URL ? "SET" : "NOT_SET");
 
-    const sequelize = new Sequelize(process.env.MYSQL_URL, {
-      dialect: "mysql",
+    const sequelize = new Sequelize(process.env.POSTGRES_URL, {
+      dialect: "postgres",
+      protocol: "postgres",
       dialectOptions: {
         ssl: { require: true, rejectUnauthorized: false },
       },
@@ -23,7 +25,8 @@ async function deploy() {
     console.log("📦 Running migrations...");
     await new Promise((resolve, reject) => {
       exec(
-        "NODE_ENV=production npx sequelize-cli db:migrate",
+        "npx sequelize-cli db:migrate --env production",
+        { env: { ...process.env, NODE_ENV: "production" } },
         (error, stdout, stderr) => {
           if (error) {
             console.error("❌ Migration error:", error);
@@ -48,7 +51,8 @@ async function deploy() {
         console.log("🌱 Database appears empty, running seeders...");
         await new Promise((resolve, reject) => {
           exec(
-            "NODE_ENV=production npx sequelize-cli db:seed:all",
+            "npx sequelize-cli db:seed:all --env production",
+            { env: { ...process.env, NODE_ENV: "production" } },
             (error, stdout, stderr) => {
               if (error) {
                 console.error("⚠️ Seeder error (non-critical):", error.message);

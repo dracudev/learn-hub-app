@@ -98,10 +98,21 @@ const userController = {
         return res.redirect("/courses");
       }
 
-      await Enrollment.create({
-        user_id: userId,
-        course_id: courseId,
-      });
+      try {
+        await Enrollment.create({
+          user_id: userId,
+          course_id: courseId,
+        });
+      } catch (err) {
+        // If unique constraint error, just redirect (already enrolled)
+        if (
+          err.name === "SequelizeUniqueConstraintError" ||
+          (err.parent && err.parent.code === "23505")
+        ) {
+          return res.redirect("/courses");
+        }
+        throw err;
+      }
 
       res.redirect("/courses");
     } catch (err) {
