@@ -47,7 +47,7 @@ const userController = {
 
       res.render("profile", {
         title: "My Profile",
-        user: req.session.user,
+        user,
         enrolledCourses: formattedCourses,
       });
     } catch (error) {
