@@ -1,22 +1,7 @@
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const { put } = require("@vercel/blob");
 
-const uploadsDir = path.join(__dirname, "../../public/uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const extension = path.extname(file.originalname);
-    cb(null, "profile-" + uniqueSuffix + extension);
-  },
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
@@ -34,8 +19,22 @@ const upload = multer({
   fileFilter: fileFilter,
 });
 
+async function uploadToVercelBlob(file) {
+  if (!file) throw new Error("No file provided");
+  const uniqueName = `profile-${Date.now()}-${Math.round(
+    Math.random() * 1e9
+  )}${file.originalname.replace(/[^.]+/, "")}`;
+  const { url } = await put(`uploads/${uniqueName}`, file.buffer, {
+    access: "public",
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+    contentType: file.mimetype,
+  });
+  return url;
+}
+
 module.exports = {
   upload,
   uploadSingle: upload.single("profilePicture"),
   uploadFields: upload.fields([{ name: "profilePicture", maxCount: 1 }]),
+  uploadToVercelBlob,
 };

@@ -1,7 +1,6 @@
 const { User, Course, Enrollment } = require("../models");
 const { validationResult } = require("express-validator");
-const path = require("path");
-const fs = require("fs");
+const { uploadToVercelBlob } = require("../middleware/upload");
 
 const userController = {
   showProfile: async (req, res) => {
@@ -180,44 +179,43 @@ const userController = {
         return res.status(404).json({ error: "User not found" });
       }
 
+      // Upload to Vercel Blob
+      let blobUrl;
+      try {
+        blobUrl = await uploadToVercelBlob(req.file);
+      } catch (err) {
+        return res
+          .status(500)
+          .json({ error: "Failed to upload image to blob" });
+      }
+
       if (
         user.profile_picture &&
-        !user.profile_picture.includes("default-avatar.png")
+        !user.profile_picture.includes("default-avatar.png") &&
+        user.profile_picture.startsWith("https://blob.vercel-storage.com/")
       ) {
-        const oldImagePath = path.join(
-          __dirname,
-          "../../public",
-          user.profile_picture
-        );
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
+        try {
+          await fetch(user.profile_picture, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`,
+            },
+          });
+        } catch (err) {
+          console.warn("Failed to delete old profile image from blob:", err);
         }
       }
 
-      const newProfilePicturePath = `/uploads/${req.file.filename}`;
-      await user.update({ profile_picture: newProfilePicturePath });
-
-      req.session.user.profile_picture = newProfilePicturePath;
+      await user.update({ profile_picture: blobUrl });
+      req.session.user.profile_picture = blobUrl;
 
       res.json({
         success: true,
         message: "Profile picture updated successfully",
-        profilePicture: newProfilePicturePath,
+        profilePicture: blobUrl,
       });
     } catch (error) {
       console.error("Error updating profile picture:", error);
-
-      if (req.file) {
-        const filePath = path.join(
-          __dirname,
-          "../../public/uploads",
-          req.file.filename
-        );
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-      }
-
       res.status(500).json({ error: "Failed to update profile picture" });
     }
   },

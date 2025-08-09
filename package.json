@@ -16,6 +16,7 @@
     "build": "npm install"
   },
   "dependencies": {
+    "@vercel/blob": "^1.1.1",
     "bcrypt": "^6.0.0",
     "cookie-session": "^2.1.1",
     "dotenv": "^16.5.0",
