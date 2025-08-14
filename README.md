@@ -1,5 +1,12 @@
 # LearnHub | Online Courses
 
+![LearnHub](public/images/mockup.png)
+
+> A comprehensive online learning platform for managing courses, user enrollment, and educational content with role-based access control.
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-learnhub--app.vercel.app-blue?style=for-the-badge&logo=vercel)](https://learnhub-app.vercel.app/)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg?style=for-the-badge)](LICENSE.md)
+
 ## Table of Contents
 
 - [Description](#description)
@@ -20,15 +27,15 @@ A Node.js application for managing courses with user authentication and enrollme
 
 ## Features
 
-- 🔑 JWT-based authentication for APIs
-- 👥 Role-based access (public, registered, admin)
-- 📚 Course management (CRUD operations)
-- 📝 Course enrollment system
-- 🛠️ Admin dashboard
-- 👤 User profiles with profile picture upload
-- 🗄️ Database abstraction layer (easy ORM switching)
-- 🛡️ Security middleware: helmet, express-rate-limit
-- 🔄 Multi-environment support (MySQL for dev, PostgreSQL for prod)
+- JWT-based authentication for APIs
+- Role-based access (public, registered, admin)
+- Course management (CRUD operations)
+- Course enrollment system
+- Admin dashboard
+- User profiles with profile picture upload
+- Database abstraction layer (easy ORM switching)
+- Security middleware: helmet, express-rate-limit
+- Multi-environment support (MySQL for dev, PostgreSQL for prod)
 
 ## Technologies Used
 
@@ -143,42 +150,26 @@ After seeding, you can log in with:
 ## File Structure
 
 ```tree
-├── app.js                    # Main application entry point
-├── package.json             # Project dependencies and scripts
-├── .env                     # Environment variables (not in repo)
-├── LICENSE.md
-├── README.md
-├── vercel.json              # Vercel deployment configuration
-├── api/                     # Serverless function entry point
-│   └── index.js
-├── database/                # Database layer and configuration
-│   ├── index.js
-│   ├── config/
-│   │   ├── database.js
-│   │   ├── sequelize.js
-│   │   └── sequelize.json
-│   ├── factories/
-│   ├── migrations/
-│   ├── schemas/
-│   └── seeders/
-├── public/                  # Static assets
-│   ├── favicon.ico
-│   ├── images/
-│   ├── scripts/
-│   │   └── deploy.js        # Production deployment script
-│   ├── styles/
-│   └── uploads/             # User uploaded files
-├── src/                     # Application source code
-│   ├── server.js            # Express server configuration
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── utils/
-│   ├── validations/
-│   └── views/
-│       └── partials/
-└── ...
+├── app.js                   # Main application entry point
+├── package.json            # Dependencies and scripts
+├── vercel.json             # Deployment configuration
+├── api/
+│   └── index.js            # Serverless function entry
+├── database/
+│   ├── config/             # Database configuration
+│   ├── migrations/         # Database migrations
+│   ├── schemas/           # Database schemas
+│   └── seeders/           # Sample data
+├── public/
+│   ├── images/            # Static images
+│   └── styles/            # CSS files
+└── src/
+    ├── server.js          # Express server
+    ├── controllers/       # Route handlers
+    ├── middleware/        # Custom middleware
+    ├── models/           # Database models
+    ├── routes/           # Route definitions
+    └── views/            # EJS templates
 ```
 
 ## Database Schema

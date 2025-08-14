@@ -5,6 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LearnHub | <%= title %></title>
 
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Dynamic learning pathways that your students deserve. Discover comprehensive courses in programming, web development, and more on LearnHub."
+    />
+    <meta
+      name="keywords"
+      content="online learning, courses, programming, javascript, web development, education, tutorials, skills"
+    />
+    <meta name="author" content="LearnHub" />
+    <meta name="robots" content="index, follow" />
+    <link
+      rel="canonical"
+      href="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://learnhub.com' %>"
+    />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="LearnHub | <%= title %>" />
+    <meta
+      property="og:description"
+      content="Dynamic learning pathways that your students deserve. Discover comprehensive courses in programming, web development, and more."
+    />
+    <meta
+      property="og:image"
+      content="<%= typeof baseUrl !== 'undefined' ? baseUrl : 'https://learnhub.com' %>/images/mockup.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="LearnHub - Online Learning Platform"
+    />
+    <meta
+      property="og:url"
+      content="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://learnhub.com' %>"
+    />
+    <meta property="og:site_name" content="LearnHub" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LearnHub | <%= title %>" />
+    <meta
+      name="twitter:description"
+      content="Dynamic learning pathways that your students deserve. Discover comprehensive courses in programming, web development, and more."
+    />
+    <meta
+      name="twitter:image"
+      content="<%= typeof baseUrl !== 'undefined' ? baseUrl : 'https://learnhub.com' %>/images/mockup.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="LearnHub - Online Learning Platform"
+    />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="LearnHub" />
+
     <!-- CSS Reset and Preload -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
