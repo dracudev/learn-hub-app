@@ -18,7 +18,7 @@
     <meta name="robots" content="index, follow" />
     <link
       rel="canonical"
-      href="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://learnhub.com' %>"
+      href="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://learnhub-app.vercel.app' %>"
     />
 
     <!-- Open Graph Meta Tags -->
@@ -30,17 +30,21 @@
     />
     <meta
       property="og:image"
-      content="<%= typeof baseUrl !== 'undefined' ? baseUrl : 'https://learnhub.com' %>/images/mockup.png"
+      content="<%= typeof baseUrl !== 'undefined' ? baseUrl : 'https://learnhub-app.vercel.app' %>/images/mockup.png"
     />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
     <meta
       property="og:image:alt"
       content="LearnHub - Online Learning Platform"
     />
     <meta
       property="og:url"
-      content="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://learnhub.com' %>"
+      content="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://learnhub-app.vercel.app' %>"
     />
     <meta property="og:site_name" content="LearnHub" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -51,7 +55,7 @@
     />
     <meta
       name="twitter:image"
-      content="<%= typeof baseUrl !== 'undefined' ? baseUrl : 'https://learnhub.com' %>/images/mockup.png"
+      content="<%= typeof baseUrl !== 'undefined' ? baseUrl : 'https://learnhub-app.vercel.app' %>/images/mockup.png"
     />
     <meta
       name="twitter:image:alt"
